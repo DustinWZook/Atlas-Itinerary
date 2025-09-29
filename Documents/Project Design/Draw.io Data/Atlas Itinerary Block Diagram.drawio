@@ -1,0 +1,40 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:143.0) Gecko/20100101 Firefox/143.0" version="28.2.5">
+  <diagram name="Page-1" id="V_fyLUnD5RXwpg2vZA_A">
+    <mxGraphModel dx="1665" dy="751" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="YJY2VArLvJcHfO2cOSiD-1" value="&lt;div&gt;Supabase&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="610" y="360" width="70" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="YJY2VArLvJcHfO2cOSiD-2" value="Vercel Server" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="585" y="260" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YJY2VArLvJcHfO2cOSiD-3" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="YJY2VArLvJcHfO2cOSiD-1" target="YJY2VArLvJcHfO2cOSiD-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="780" y="430" as="sourcePoint" />
+            <mxPoint x="830" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YJY2VArLvJcHfO2cOSiD-5" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="YJY2VArLvJcHfO2cOSiD-7" target="YJY2VArLvJcHfO2cOSiD-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="490" y="284" as="sourcePoint" />
+            <mxPoint x="480" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YJY2VArLvJcHfO2cOSiD-7" value="Atlas Itinerary" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="190" width="360" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="YJY2VArLvJcHfO2cOSiD-8" value="User Interface" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YJY2VArLvJcHfO2cOSiD-9" value="API Calls" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YJY2VArLvJcHfO2cOSiD-10" value="Client / Server Communication" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="310" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
