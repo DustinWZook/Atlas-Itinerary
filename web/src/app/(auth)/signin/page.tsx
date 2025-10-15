@@ -1,10 +1,10 @@
-// web/src/app/(auth)/signin/page.tsx
 'use client';
+
+import { useEffect, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { createSupabaseClient } from '@/lib/shared/supabaseClient';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,19 +12,23 @@ export default function SigninPage() {
   const supabase = createSupabaseClient();
   const router = useRouter();
 
+  
+  const signedOutFlag = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    return new URLSearchParams(window.location.search).get('signedout') === '1';
+  }, []);
+
   useEffect(() => {
     (async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (session) router.replace('/home');
+      if (session && !signedOutFlag) router.replace('/home');
     })();
-  }, [router, supabase]);
+  }, [router, supabase, signedOutFlag]);
 
-
-
-      const redirectTo =
-  typeof window !== 'undefined'
-    ? `${window.location.origin}/auth/callback?next=/home`
-    : undefined;
+  const redirectTo =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/auth/callback?next=/home`
+      : undefined;
 
   return (
     <main style={{ minHeight:'60vh', display:'grid', placeItems:'center', padding:'1.5rem' }}>
@@ -41,4 +45,3 @@ export default function SigninPage() {
     </main>
   );
 }
-
