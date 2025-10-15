@@ -19,9 +19,10 @@ export default function SigninPage() {
     })();
   }, [router, supabase]);
 
-  const redirectTo =
+
+   const redirectTo =
     typeof window !== 'undefined'
-      ? `${window.location.origin}/auth/callback?next=/home`
+      ? `${window.location.origin}/callback?next=/home`
       : undefined;
 
   return (
