@@ -20,10 +20,11 @@ export default function SigninPage() {
   }, [router, supabase]);
 
 
-   const redirectTo =
-    typeof window !== 'undefined'
-      ? `${window.location.origin}/callback?next=/home`
-      : undefined;
+
+      const redirectTo =
+  typeof window !== 'undefined'
+    ? `${window.location.origin}/auth/callback?next=/home`
+    : undefined;
 
   return (
     <main style={{ minHeight:'60vh', display:'grid', placeItems:'center', padding:'1.5rem' }}>
