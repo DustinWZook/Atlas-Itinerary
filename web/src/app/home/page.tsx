@@ -7,15 +7,16 @@ export default function HomePage() {
   const router = useRouter();
   const supabase = createSupabaseClient();
 
-  const signOut = async () => {
+    const signOut = async () => {
     try {
       await supabase.auth.signOut({ scope: 'global' });
     } finally {
       try {
-        for (const k of Object.keys(localStorage)) if (k.startsWith('sb-')) localStorage.removeItem(k);
+        for (const k of Object.keys(localStorage)) {
+          if (k.startsWith('sb-')) localStorage.removeItem(k);
+        }
       } catch {}
-      router.replace('/signin?signedout=1');
-      router.refresh();
+      window.location.assign('/signin?signedout=1');
     }
   };
 
