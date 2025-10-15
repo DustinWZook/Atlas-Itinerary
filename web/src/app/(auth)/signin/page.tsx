@@ -1,12 +1,24 @@
+// web/src/app/(auth)/signin/page.tsx
 'use client';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { createSupabaseClient } from '@/lib/shared/supabaseClient';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
 export default function SigninPage() {
   const supabase = createSupabaseClient();
+  const router = useRouter();
+
+  useEffect(() => {
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) router.replace('/home');
+    })();
+  }, [router, supabase]);
+
   const redirectTo =
     typeof window !== 'undefined'
       ? `${window.location.origin}/auth/callback?next=/home`
@@ -27,3 +39,4 @@ export default function SigninPage() {
     </main>
   );
 }
+
