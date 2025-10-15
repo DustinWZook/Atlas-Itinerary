@@ -4,6 +4,7 @@ import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { createSupabaseClient } from '@/lib/shared/supabaseClient';
 
+
 export default function SigninPage() {
   const supabase = createSupabaseClient();
 

@@ -2,6 +2,7 @@
 
 import { createSupabaseClient } from '@/lib/shared/supabaseClient';
 
+
 export default function HomePage() {
   const supabase = createSupabaseClient();
 
