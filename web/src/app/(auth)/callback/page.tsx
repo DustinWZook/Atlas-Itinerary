@@ -1,36 +1,30 @@
-'use client';
-
-import { Suspense, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { Auth } from '@supabase/auth-ui-react';
+import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { createSupabaseClient } from '@/lib/shared/supabaseClient';
 
-function CallbackInner() {
+export const dynamic = 'force-dynamic';
+
+export default function SigninPage() {
   const supabase = createSupabaseClient();
-  const router = useRouter();
-  const params = useSearchParams();
 
-  useEffect(() => {
-    (async () => {
-      const code = params.get('code');
-      const next = params.get('next') ?? '/home';
-      if (code) {
-        await supabase.auth.exchangeCodeForSession(code).catch(() => {});
-      }
-      router.replace(next);
-    })();
-  }, [params, router, supabase]);
+
+  const redirectTo =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/auth/callback?next=/home`
+      : undefined;
 
   return (
-    <main style={{ padding: 16 }}>
-      <p>Signing you in...</p>
+    <main style={{ minHeight: '60vh', display: 'grid', placeItems: 'center', padding: '1.5rem' }}>
+      <div style={{ width: '100%', maxWidth: 384, padding: '1.5rem', border: '1px solid #e5e7eb', borderRadius: '1rem' }}>
+        <h1 style={{ fontSize: '1.25rem', fontWeight: 600, textAlign: 'center', marginBottom: '.75rem' }}>Sign in</h1>
+        <Auth
+          supabaseClient={supabase}
+          providers={['google']}
+          onlyThirdPartyProviders
+          appearance={{ theme: ThemeSupa }}
+          redirectTo={redirectTo}
+        />
+      </div>
     </main>
-  );
-}
-
-export default function AuthCallbackPage() {
-  return (
-    <Suspense fallback={<main style={{ padding: 16 }}><p>Loading...</p></main>}>
-      <CallbackInner />
-    </Suspense>
   );
 }
