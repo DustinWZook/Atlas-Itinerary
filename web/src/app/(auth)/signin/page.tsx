@@ -12,18 +12,6 @@ export default function SigninPage() {
   const supabase = createSupabaseClient();
   const router = useRouter();
 
-  
-  // const signedOutFlag = useMemo(() => {
-  //   if (typeof window === 'undefined') return false;
-  //   return new URLSearchParams(window.location.search).get('signedout') === '1';
-  // }, []);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const { data: { session } } = await supabase.auth.getSession();
-  //     if (session && !signedOutFlag) router.replace('/home');
-  //   })();
-  // }, [router, supabase, signedOutFlag]);
 
   const signedOutFlag = typeof window !== 'undefined'
   && new URLSearchParams(window.location.search).get('signedout') === '1';
