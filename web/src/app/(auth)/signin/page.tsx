@@ -25,7 +25,7 @@ useEffect(() => {
 
   const redirectTo =
     typeof window !== 'undefined'
-      ? `${window.location.origin}/auth/callback?next=/home`
+      ? `${window.location.origin}/auth/callback`
       : undefined;
 
   return (
