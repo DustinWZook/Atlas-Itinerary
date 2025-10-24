@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { createSupabaseClient } from '@/lib/shared/supabaseClient';
 
 export default function HomePage() {
@@ -22,7 +23,9 @@ export default function HomePage() {
 
   return (
     <main style={{ padding: 16 }}>
-      <h1>Hello, world!</h1>
+      <Link href={'/itineraryList'}>Itinerary List</Link>
+      <h1>Home</h1>
+      <p>Hello World!</p>
       <button onClick={signOut} style={{ padding: '8px 12px', marginTop: 12 }}>
         Sign out
       </button>
