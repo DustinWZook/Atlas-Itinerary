@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 import CitySearch from '@/components/CitySearch';
 import CategorySidebar from '@/components/CategorySidebar';
@@ -197,70 +198,72 @@ export default function ItineraryDetailsPage() {
 
   // Render UI
   return (
-    <main style={{ padding: 16, maxWidth: 1200, margin: '0 auto', display: 'grid', gap: 16 }}> 
-      <Link href="/home">Home</Link>
-      <h1 style={{ marginBottom: 0 }}>Itinerary Details (Create)</h1>
-      <p style={{ marginTop: 4, opacity: 0.8 }}>
-        Pick a city (defaults to your location), then switch categories and add places.
-      </p>
+     <Suspense fallback={<div />}>
+      <main style={{ padding: 16, maxWidth: 1200, margin: '0 auto', display: 'grid', gap: 16 }}>
+        <Link href="/home">Home</Link>
+        <h1 style={{ marginBottom: 0 }}>Itinerary Details (Create)</h1>
+        <p style={{ marginTop: 4, opacity: 0.8 }}>
+          Pick a city (defaults to your location), then switch categories and add places.
+        </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: 24, alignItems: 'start' }}>
-        <CategorySidebar
-          selected={selected}
-          onSelect={(c) => {
-            setSelected(c);
-            setPage(1);
-          }}
-          disabled={!center || loading}
-        />
+        <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: 24, alignItems: 'start' }}>
+          <CategorySidebar
+            selected={selected}
+            onSelect={(c) => {
+              setSelected(c);
+              setPage(1);
+            }}
+            disabled={!center || loading}
+          />
 
-        <section style={{ display: 'grid', gap: 16 }}>
-          <header style={{ display: 'grid', gap: 8 }}>
-            <CitySearch onCity={onCitySelect} />
-            {center && (
-              <p style={{ margin: 0 }}>
-                Showing <strong>{selected}</strong> near <strong>{city}</strong>
-              </p>
-            )}
-          </header>
-
-          {loading && !state[selected].loaded && <p>Loading…</p>}
-
-          {state[selected].rows.length > 0 && (
-            <>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16 }}>
-                {rows.map((p) => (
-                  <PlaceCard key={p.id} place={p} onClick={openModal} />
-                ))}
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div />
-                <Pagination page={page} pageSize={pageSize} total={totalSelected} onPage={setPage} />
-                <div />
-              </div>
-
-              {state[selected].nextPageToken && (
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <button onClick={() => fetchMore(selected)} disabled={loading}>
-                    {loading ? 'Loading…' : 'Load more'}
-                  </button>
-                </div>
+          <section style={{ display: 'grid', gap: 16 }}>
+            <header style={{ display: 'grid', gap: 8 }}>
+              <CitySearch onCity={onCitySelect} />
+              {center && (
+                <p style={{ margin: 0 }}>
+                  Showing <strong>{selected}</strong> near <strong>{city}</strong>
+                </p>
               )}
-            </>
-          )}
+            </header>
 
-          {!loading && state[selected].loaded && state[selected].rows.length === 0 && (
-            <p>No results for this area.</p>
-          )}
-        </section>
-      </div>
+            {loading && !state[selected].loaded && <p>Loading…</p>}
 
-      <PlaceModal open={modalOpen} place={active} onClose={() => setModalOpen(false)} onAdd={onAdd} />
+            {state[selected].rows.length > 0 && (
+              <>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16 }}>
+                  {rows.map((p) => (
+                    <PlaceCard key={p.id} place={p} onClick={openModal} />
+                  ))}
+                </div>
 
-      <button onClick={signOut} style={{ padding: '8px 12px', marginTop: 12 }}>
-        Sign out
-      </button>
-    </main>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div />
+                  <Pagination page={page} pageSize={pageSize} total={totalSelected} onPage={setPage} />
+                  <div />
+                </div>
+
+                {state[selected].nextPageToken && (
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <button onClick={() => fetchMore(selected)} disabled={loading}>
+                      {loading ? 'Loading…' : 'Load more'}
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+
+            {!loading && state[selected].loaded && state[selected].rows.length === 0 && (
+              <p>No results for this area.</p>
+            )}
+          </section>
+        </div>
+
+        <PlaceModal open={modalOpen} place={active} onClose={() => setModalOpen(false)} onAdd={onAdd} />
+
+        <button onClick={signOut} style={{ padding: '8px 12px', marginTop: 12 }}>
+          Sign out
+        </button>
+      </main>
+    </Suspense>
   );
 }
