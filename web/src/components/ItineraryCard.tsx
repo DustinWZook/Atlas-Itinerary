@@ -11,7 +11,7 @@ async function alertClick(itineraryid : string) {
         }
         else {
             for (let i = 0; i < locations.length; i++) {
-            locationsStr += `${i+1}: tripid=${locations[i].tripid} startdate=${locations[i].startdate} enddate=${locations[i].enddate} starttime=${locations[i].starttime} endtime=${locations[i].endtime}`;
+            locationsStr += `${i+1}: tripid=${locations[i].placeid} startdate=${locations[i].startdate} enddate=${locations[i].enddate} starttime=${locations[i].starttime} endtime=${locations[i].endtime}`;
             if (i != locations.length - 1) {
                 locationsStr += '\n\n';
             }
