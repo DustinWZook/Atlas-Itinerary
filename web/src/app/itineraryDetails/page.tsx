@@ -2,8 +2,6 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
 
 import CitySearch from '@/components/CitySearch';
 import CategorySidebar from '@/components/CategorySidebar';
@@ -19,8 +17,16 @@ import { createSupabaseClient } from '@/lib/shared/supabaseClient';
 // Main Itinerary Details Page
 export default function ItineraryDetailsPage() {
   const supabase = createSupabaseClient();
-  const params = useSearchParams();
-  const itineraryId = params.get('itineraryid') ?? ''; // itinerary to add places to
+
+  // Itinerary ID from query string
+  // used when adding a place to an
+  // itinerary to add places to
+  const [itineraryId, setItineraryId] = useState(''); // holds ?itineraryid=... from the URL
+  useEffect(() => {
+    // Read the query string once on mount; avoids Suspense requirement for useSearchParams
+    const qs = new URLSearchParams(window.location.search);
+    setItineraryId(qs.get('itineraryid') ?? '');
+  }, []);
 
   // State
   const [center, setCenter] = useState<{ lat: number; lng: number } | null>(null);// map center
@@ -38,7 +44,6 @@ export default function ItineraryDetailsPage() {
   // initialized empty
   // loaded indicates if first fetch has completed
   // stored in an object by category
-  // e.g., state['lodging'] = { rows: [...], nextPageToken: '...', loaded: true }
   const [state, setState] = useState<Record<Category, CatState>>({ // initial empty state
     lodging: { rows: [], nextPageToken: null, loaded: false },
     dining: { rows: [], nextPageToken: null, loaded: false },
@@ -196,74 +201,72 @@ export default function ItineraryDetailsPage() {
     }
   }
 
-  // Render UI
+  // Render UI 
   return (
-     <Suspense fallback={<div />}>
-      <main style={{ padding: 16, maxWidth: 1200, margin: '0 auto', display: 'grid', gap: 16 }}>
-        <Link href="/home">Home</Link>
-        <h1 style={{ marginBottom: 0 }}>Itinerary Details (Create)</h1>
-        <p style={{ marginTop: 4, opacity: 0.8 }}>
-          Pick a city (defaults to your location), then switch categories and add places.
-        </p>
+    <main style={{ padding: 16, maxWidth: 1200, margin: '0 auto', display: 'grid', gap: 16 }}>
+      <Link href="/home">Home</Link>
+      <h1 style={{ marginBottom: 0 }}>Itinerary Details (Create)</h1>
+      <p style={{ marginTop: 4, opacity: 0.8 }}>
+        Pick a city (defaults to your location), then switch categories and add places.
+      </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: 24, alignItems: 'start' }}>
-          <CategorySidebar
-            selected={selected}
-            onSelect={(c) => {
-              setSelected(c);
-              setPage(1);
-            }}
-            disabled={!center || loading}
-          />
+      <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: 24, alignItems: 'start' }}>
+        <CategorySidebar
+          selected={selected}
+          onSelect={(c) => {
+            setSelected(c);
+            setPage(1);
+          }}
+          disabled={!center || loading}
+        />
 
-          <section style={{ display: 'grid', gap: 16 }}>
-            <header style={{ display: 'grid', gap: 8 }}>
-              <CitySearch onCity={onCitySelect} />
-              {center && (
-                <p style={{ margin: 0 }}>
-                  Showing <strong>{selected}</strong> near <strong>{city}</strong>
-                </p>
+        <section style={{ display: 'grid', gap: 16 }}>
+          <header style={{ display: 'grid', gap: 8 }}>
+            <CitySearch onCity={onCitySelect} />
+            {center && (
+              <p style={{ margin: 0 }}>
+                Showing <strong>{selected}</strong> near <strong>{city}</strong>
+              </p>
+            )}
+          </header>
+
+          {loading && !state[selected].loaded && <p>Loading…</p>}
+
+          {state[selected].rows.length > 0 && (
+            <>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16 }}>
+                {rows.map((p) => (
+                  <PlaceCard key={p.id} place={p} onClick={openModal} />
+                ))}
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div />
+                <Pagination page={page} pageSize={pageSize} total={totalSelected} onPage={setPage} />
+                <div />
+              </div>
+
+              {state[selected].nextPageToken && (
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <button onClick={() => fetchMore(selected)} disabled={loading}>
+                    {loading ? 'Loading…' : 'Load more'}
+                  </button>
+                </div>
               )}
-            </header>
+            </>
+          )}
 
-            {loading && !state[selected].loaded && <p>Loading…</p>}
+          {!loading && state[selected].loaded && state[selected].rows.length === 0 && (
+            <p>No results for this area.</p>
+          )}
+        </section>
+      </div>
 
-            {state[selected].rows.length > 0 && (
-              <>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16 }}>
-                  {rows.map((p) => (
-                    <PlaceCard key={p.id} place={p} onClick={openModal} />
-                  ))}
-                </div>
+      <PlaceModal open={modalOpen} place={active} onClose={() => setModalOpen(false)} onAdd={onAdd} />
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div />
-                  <Pagination page={page} pageSize={pageSize} total={totalSelected} onPage={setPage} />
-                  <div />
-                </div>
-
-                {state[selected].nextPageToken && (
-                  <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <button onClick={() => fetchMore(selected)} disabled={loading}>
-                      {loading ? 'Loading…' : 'Load more'}
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
-
-            {!loading && state[selected].loaded && state[selected].rows.length === 0 && (
-              <p>No results for this area.</p>
-            )}
-          </section>
-        </div>
-
-        <PlaceModal open={modalOpen} place={active} onClose={() => setModalOpen(false)} onAdd={onAdd} />
-
-        <button onClick={signOut} style={{ padding: '8px 12px', marginTop: 12 }}>
-          Sign out
-        </button>
-      </main>
-    </Suspense>
+      <button onClick={signOut} style={{ padding: '8px 12px', marginTop: 12 }}>
+        Sign out
+      </button>
+    </main>
   );
 }
