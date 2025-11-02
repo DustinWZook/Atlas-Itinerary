@@ -58,3 +58,17 @@ export async function createItinerary(input: {
   if (error) throw error;
   return { itineraryid: data!.itineraryid };
 }
+
+// Removes the itinerary row identified by the itineraryid parameter passed
+export async function removeItinerary(itineraryid: string) {
+    const supabase = createSupabaseClient();
+
+    const response = await supabase
+        .from('itineraries')
+        .delete()
+        .eq('itineraryid', itineraryid);
+    
+    if (response.error) {
+        throw response.error;
+    }
+}

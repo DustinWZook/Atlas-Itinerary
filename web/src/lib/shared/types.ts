@@ -35,3 +35,11 @@ export type PlaceDetails = {
   description?: string;
   photos?: string[];
 };
+
+export type itinerayRow = {
+    itineraryid: string;
+    name: string;
+    traveldestination: string;
+    startdate: string;
+    enddate: string;
+};
