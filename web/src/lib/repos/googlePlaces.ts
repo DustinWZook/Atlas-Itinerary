@@ -14,37 +14,53 @@ const DETAIL_FIELDS = [
   'currentOpeningHours.weekdayDescriptions','regularOpeningHours.weekdayDescriptions',
   'editorialSummary','photos.name'
 ].join(',');
-const key = () => process.env.GOOGLE_MAPS_SERVER_KEY!;
 
+const serverKey = () => {
+  const k = process.env.GOOGLE_MAPS_SERVER_KEY;
+  if (!k) throw new Error('Missing GOOGLE_MAPS_SERVER_KEY');
+  return k;
+};
 
 export async function textSearchPage(opts: {
-  textQuery: string;
+  lat?: number;               // <-- now optional
+  lng?: number;               // <-- now optional
+  includedType?: string;
+  strictTypeFiltering?: boolean;
+  textQuery?: string;
+  radius?: number;
   pageSize?: number;
   pageToken?: string | null;
-  lat?: number;
-  lng?: number;
 }): Promise<{ rows: PlaceRow[]; nextPageToken: string | null }> {
-  const { textQuery, pageSize = 20, pageToken = null, lat, lng } = opts;
+  const {
+    lat, lng, includedType, strictTypeFiltering = false,
+    textQuery, radius = 6000, pageSize = 20, pageToken = null
+  } = opts;
 
-  const body: any = {
-    textQuery,
-    pageSize: Math.min(pageSize, 20),
-  };
-  if (pageToken) body.pageToken = pageToken;
+  const body: any = { pageSize: Math.min(pageSize, 20) };
+
+  // Only include locationBias if we were given lat/lng
   if (typeof lat === 'number' && typeof lng === 'number') {
-    body.locationBias = { circle: { center: { latitude: lat, longitude: lng }, radius: 6000 } };
+    body.locationBias = { circle: { center: { latitude: lat, longitude: lng }, radius } };
   }
+
+  if (includedType) {
+    body.includedType = includedType;
+    body.strictTypeFiltering = strictTypeFiltering;
+  }
+  if (textQuery) body.textQuery = textQuery;
+  if (pageToken) body.pageToken = pageToken;
 
   const r = await fetch(TEXT_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Goog-Api-Key': key(),
-      'X-Goog-FieldMask': LIST_FIELDS
+      'X-Goog-Api-Key': serverKey(),
+      'X-Goog-FieldMask': LIST_FIELDS,
     },
     body: JSON.stringify(body),
-    cache: 'no-store'
+    cache: 'no-store',
   });
+
   if (!r.ok) throw new Error(await r.text());
   const data = await r.json();
 
@@ -56,16 +72,18 @@ export async function textSearchPage(opts: {
     primaryType: p.primaryType,
     lat: p.location?.latitude,
     lng: p.location?.longitude,
-    photoName: p.photos?.[0]?.name
+    photoName: p.photos?.[0]?.name,
   }));
+
   return { rows, nextPageToken: data.nextPageToken ?? null };
 }
 
 export async function placeDetails(id: string): Promise<PlaceDetails> {
   const url = `${BASE_PLACE}${encodeURIComponent(id)}?fields=${encodeURIComponent(DETAIL_FIELDS)}`;
-  const r = await fetch(url, { headers: { 'X-Goog-Api-Key': key() }, cache: 'no-store' });
+  const r = await fetch(url, { headers: { 'X-Goog-Api-Key': serverKey() }, cache: 'no-store' });
   if (!r.ok) throw new Error(await r.text());
   const p = await r.json();
+
   return {
     id: p.id,
     name: p.displayName?.text,
@@ -79,6 +97,6 @@ export async function placeDetails(id: string): Promise<PlaceDetails> {
     openingHours:
       p.currentOpeningHours?.weekdayDescriptions ??
       p.regularOpeningHours?.weekdayDescriptions ?? null,
-    photos: (p.photos || []).map((ph: any) => ph.name)
+    photos: (p.photos || []).map((ph: any) => ph.name),
   };
 }

@@ -1,43 +1,61 @@
-
 import { NextRequest } from 'next/server';
 import { textSearchPage } from '@/lib/repos/googlePlaces';
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
+  try {
+    const {
+      lat,
+      lng,
+      city,
+      category,
+      pageToken,
+      radius = 6000,
+      pageSize = 20,
+    } = await req.json();
 
-  const city: string | undefined = body.city;
-  const lat: number | undefined = body.lat;
-  const lng: number | undefined = body.lng;
-  const category: 'lodging'|'dining'|'attractions' = body.category;
-  const pageToken: string | undefined = body.pageToken;
-  const pageSize: number = body.pageSize ?? 20;
+    if ((lat == null || lng == null) && !city) {
+      return new Response('Missing location: provide {lat,lng} or {city}', { status: 400 });
+    }
 
-  if (!category) {
-    return new Response('Missing category', { status: 400 });
+    let includedType: string | undefined;
+    let strictTypeFiltering = false;
+    let textQuery: string | undefined;
+
+    switch (category) {
+      case 'lodging':
+        includedType = 'lodging';
+        strictTypeFiltering = true;
+        textQuery = city ? `hotels in ${city}` : 'hotels';
+        break;
+      case 'dining':
+        includedType = 'restaurant';
+        strictTypeFiltering = true;
+        textQuery = city ? `restaurants in ${city}` : 'restaurants';
+        break;
+      default:
+        textQuery = city ? `tourist attractions in ${city}` : 'tourist attractions';
+        break;
+    }
+
+    const data = await textSearchPage({
+      // NOTE: we now pass lat/lng only if they exist; otherwise we omit them
+      lat: typeof lat === 'number' ? lat : undefined,
+      lng: typeof lng === 'number' ? lng : undefined,
+      includedType,
+      strictTypeFiltering,
+      textQuery,
+      radius,
+      pageSize,
+      pageToken: pageToken ?? null,
+    });
+
+    return Response.json(data);
+  } catch (err: any) {
+    console.error('POST /api/places failed:', err?.message || err);
+    return new Response('Upstream error', { status: 500 });
   }
-  if (!city && (typeof lat !== 'number' || typeof lng !== 'number')) {
-    return new Response('Provide either city or lat/lng', { status: 400 });
-  }
-
-  // Build a simple text query using the category
-  let q = '';
-  if (category === 'lodging') q = city ? `hotels in ${city}` : 'hotels';
-  else if (category === 'dining') q = city ? `restaurants in ${city}` : 'restaurants';
-  else q = city ? `tourist attractions in ${city}` : 'tourist attractions';
-
-  // Pass optional lat/lng to enable proximity bias (works when user allowed geolocation)
-  const data = await textSearchPage({
-    textQuery: q,
-    pageSize,
-    pageToken,
-    lat,
-    lng, 
-  });
-
-  return Response.json(data);
 }
 
-// GET /api/places
 export async function GET() {
-  return new Response('POST { city OR lat/lng, category, pageToken? }', { status: 200 });
+  return new Response('POST /api/places { lat,lng | city, category, pageToken? }', { status: 200 });
 }
