@@ -1,0 +1,10 @@
+.mainHeader {
+    background-color: rgb(65, 65, 65);
+}
+
+.mainHeader h1 {
+    color: rgb(232, 232, 232);
+    text-shadow: 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    padding: 30px
+}

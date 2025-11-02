@@ -1,0 +1,30 @@
+.navBar {
+    padding-bottom: 1em;
+}
+
+.navBar ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+    align-items: center;
+}
+
+.navBar ul li a {
+    color: orange;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: color 1s ease-out;
+}
+
+.navBar ul li a:hover {
+    transition: color 1s ease;
+    color: rgba(255, 166, 0, 0.6);
+}
+
+.navBar ul li button {
+    padding: 6px;
+    border-radius: 16px;
+}

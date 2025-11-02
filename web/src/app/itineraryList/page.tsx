@@ -10,6 +10,7 @@ import '@/css/itineraryList.css';
 
 import { createItinerary, getItineraries, removeItinerary } from '@/lib/repos/itineraries';
 import { itinerayRow } from '@/lib/shared/types';
+import Header from '@/components/Header';
 
 export default function itineraryListPage() {
   const supabase = createSupabaseClient();
@@ -89,8 +90,8 @@ export default function itineraryListPage() {
 
   return (
     <>
+      <Header onSignOut={signOut} />
       <main style={{ padding: 16, maxWidth: 1200, margin: '0 auto', display: 'grid', gap: 16 }}>
-        <Link href={'/home'}>Home</Link>
         <h1>Itinerary List</h1>
         <br />
         <div>
@@ -101,12 +102,6 @@ export default function itineraryListPage() {
             <ItineraryCard itinerary={itin} key={itin.itineraryid} clickExpand={handleModal} clickDelete={handleDeleteItinerary} />
           )}
         </div>}
-
-        <div>
-          <button onClick={signOut} style={{ padding: '8px 12px', marginTop: 12 }}>
-            Sign out
-          </button>
-        </div>
 
         <ItineraryModal open={modalOpen} itinerary={selectedItinerary} onClose={() => setModalOpen(false)} />
       </main>

@@ -9,6 +9,7 @@ import PlaceCard from '@/components/PlaceCard';
 import PlaceModal from '@/components/PlaceModal';
 import CreateItineraryButton from '@/components/CreateItineraryButton';
 import ItineraryPicker from '@/components/ItineraryPicker';
+import Header from '@/components/Header';
 
 import type { Category, CityPick, PlaceDetails, PlaceRow } from '@/lib/shared/types';
 import { addItineraryLocation } from '@/lib/repos/locations';
@@ -52,7 +53,6 @@ export default function ItineraryDetailsPage() {
     attractions: { rows: [], nextPageToken: null, loaded: false },
   });
 
-  
   const useGeo = !!center; // if we have geolocation then auto-populate
   const canQuery = useGeo || !!city;  // must have either geo OR city to query
 
@@ -97,7 +97,7 @@ export default function ItineraryDetailsPage() {
   }
 
   // first page for a category using either geo or city
-  async function fetchFirst(cat: Category, where: { center?: {lat:number;lng:number}; city?: string }) {
+  async function fetchFirst(cat: Category, where: { center?: { lat: number; lng: number }; city?: string }) {
     if (!where.center && !where.city) return;
 
     setLoading(true);
@@ -105,7 +105,7 @@ export default function ItineraryDetailsPage() {
     try {
       const body: any = { category: cat, pageSize: 20 };
       if (where.center) { body.lat = where.center.lat; body.lng = where.center.lng; }
-      if (where.city)   { body.city = where.city; }
+      if (where.city) { body.city = where.city; }
 
       const res = await fetch('/api/places', {
         method: 'POST',
@@ -142,7 +142,7 @@ export default function ItineraryDetailsPage() {
         pageToken: st.nextPageToken,
       };
       if (useGeo && center) { body.lat = center.lat; body.lng = center.lng; }
-      else if (city)        { body.city = city; }
+      else if (city) { body.city = city; }
 
       const res = await fetch('/api/places', {
         method: 'POST',
@@ -172,7 +172,7 @@ export default function ItineraryDetailsPage() {
     if (!canQuery) return; // need geo or city
     if (!state[selected].loaded) {
       if (useGeo && center) fetchFirst(selected, { center });
-      else if (city)        fetchFirst(selected, { city });
+      else if (city) fetchFirst(selected, { city });
     }
   }, [selected, canQuery, useGeo, center, city]); // re-run when these change
 
@@ -234,7 +234,7 @@ export default function ItineraryDetailsPage() {
     setPage(1);
     setState({
       lodging: { rows: [], nextPageToken: null, loaded: false },
-      dining:  { rows: [], nextPageToken: null, loaded: false },
+      dining: { rows: [], nextPageToken: null, loaded: false },
       attractions: { rows: [], nextPageToken: null, loaded: false },
     });
     await fetchFirst('lodging', { city: dest });
@@ -244,98 +244,96 @@ export default function ItineraryDetailsPage() {
   async function signOut() {
     try { await supabase.auth.signOut({ scope: 'global' }); }
     finally {
-      try { for (const k of Object.keys(localStorage)) if (k.startsWith('sb-')) localStorage.removeItem(k); } catch {}
+      try { for (const k of Object.keys(localStorage)) if (k.startsWith('sb-')) localStorage.removeItem(k); } catch { }
       window.location.assign('/signin?signedout=1');
     }
   }
 
   // UI
   return (
-    <main style={{ padding: 16, maxWidth: 1200, margin: '0 auto', display: 'grid', gap: 16 }}>
-      <Link href="/home">Home</Link>
-      <h1 style={{ marginBottom: 0 }}>Itinerary Details (Create)</h1>
-      <p style={{ marginTop: 4, opacity: 0.8 }}>
-        Pick a city (or allow location), then switch categories and add places.
-      </p>
+    <>
+      <Header onSignOut={signOut} />
+      <main style={{ padding: 16, maxWidth: 1200, margin: '0 auto', display: 'grid', gap: 16 }}>
+        <h1 style={{ marginBottom: 0 }}>Itinerary Details (Create)</h1>
+        <p style={{ marginTop: 4, opacity: 0.8 }}>
+          Pick a city (or allow location), then switch categories and add places.
+        </p>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Itineraries</h1>
-        <CreateItineraryButton />
-      </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h1>Itineraries</h1>
+          <CreateItineraryButton />
+        </div>
 
-      <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
-        <ItineraryPicker
-          value={itineraryId}
-          onChange={onItineraryPicked}
-        />
-      </div>
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <ItineraryPicker
+            value={itineraryId}
+            onChange={onItineraryPicked}
+          />
+        </div>
 
-      {errorMsg && <p style={{ color: '#b91c1c' }}>Error: {errorMsg}</p>}
+        {errorMsg && <p style={{ color: '#b91c1c' }}>Error: {errorMsg}</p>}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: 24, alignItems: 'start' }}>
-        <CategorySidebar
-          selected={selected}
-          onSelect={(c) => { setSelected(c); setPage(1); }}
-          disabled={loading || !canQuery }
-        />
+        <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: 24, alignItems: 'start' }}>
+          <CategorySidebar
+            selected={selected}
+            onSelect={(c) => { setSelected(c); setPage(1); }}
+            disabled={loading || !canQuery}
+          />
 
-        <section style={{ display: 'grid', gap: 16 }}>
-          <header style={{ display: 'grid', gap: 8 }}>
-            <CitySearch onCity={onCitySelect} />
-            <p style={{ margin: 0 }}>
-              Showing <strong>{selected}</strong>{' '}
-              {useGeo ? (
-                <span>near <strong>your location</strong></span>
-              ) : city ? (
-                <>in <strong>{city}</strong></>
-              ) : (
-                <i>(type a city or allow location)</i>
-              )}
-            </p>
-          </header>
+          <section style={{ display: 'grid', gap: 16 }}>
+            <header style={{ display: 'grid', gap: 8 }}>
+              <CitySearch onCity={onCitySelect} />
+              <p style={{ margin: 0 }}>
+                Showing <strong>{selected}</strong>{' '}
+                {useGeo ? (
+                  <span>near <strong>your location</strong></span>
+                ) : city ? (
+                  <>in <strong>{city}</strong></>
+                ) : (
+                  <i>(type a city or allow location)</i>
+                )}
+              </p>
+            </header>
 
-          {loading && !state[selected].loaded && <p>Loading…</p>}
+            {loading && !state[selected].loaded && <p>Loading…</p>}
 
-          {state[selected].rows.length > 0 && (
-            <>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16 }}>
-                {rows.map((p) => (
-                  <PlaceCard key={p.id} place={p} onClick={openModal} />
-                ))}
-              </div>
+            {state[selected].rows.length > 0 && (
+              <>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16 }}>
+                  {rows.map((p) => (
+                    <PlaceCard key={p.id} place={p} onClick={openModal} />
+                  ))}
+                </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <button onClick={() => setPage((x) => Math.max(1, x - 1))} disabled={page === 1}>Prev</button>
-                <span>Page {page} of {Math.max(1, Math.ceil(totalSelected / pageSize))}</span>
-                <button
-                  onClick={() => setPage((x) => (x * pageSize < totalSelected ? x + 1 : x))}
-                  disabled={page * pageSize >= totalSelected}
-                >
-                  Next
-                </button>
-              </div>
-
-              {state[selected].nextPageToken && (
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <button onClick={() => fetchMore(selected)} disabled={loading}>
-                    {loading ? 'Loading…' : 'Load more'}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <button onClick={() => setPage((x) => Math.max(1, x - 1))} disabled={page === 1}>Prev</button>
+                  <span>Page {page} of {Math.max(1, Math.ceil(totalSelected / pageSize))}</span>
+                  <button
+                    onClick={() => setPage((x) => (x * pageSize < totalSelected ? x + 1 : x))}
+                    disabled={page * pageSize >= totalSelected}
+                  >
+                    Next
                   </button>
                 </div>
-              )}
-            </>
-          )}
 
-          {!loading && state[selected].loaded && state[selected].rows.length === 0 && (
-            <p>No results for this area.</p>
-          )}
-        </section>
-      </div>
+                {state[selected].nextPageToken && (
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <button onClick={() => fetchMore(selected)} disabled={loading}>
+                      {loading ? 'Loading…' : 'Load more'}
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
 
-      <PlaceModal open={modalOpen} place={active} onClose={() => setModalOpen(false)} onAdd={onAdd} />
+            {!loading && state[selected].loaded && state[selected].rows.length === 0 && (
+              <p>No results for this area.</p>
+            )}
+          </section>
+        </div>
 
-      <button onClick={signOut} style={{ padding: '8px 12px', marginTop: 12 }}>
-        Sign out
-      </button>
-    </main>
+        <PlaceModal open={modalOpen} place={active} onClose={() => setModalOpen(false)} onAdd={onAdd} />
+      </main>
+    </>
   );
 }
