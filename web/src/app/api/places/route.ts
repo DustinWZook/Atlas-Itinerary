@@ -1,37 +1,43 @@
+
 import { NextRequest } from 'next/server';
 import { textSearchPage } from '@/lib/repos/googlePlaces';
 
-// POST /api/places
 export async function POST(req: NextRequest) {
-  const { lat, lng, category, pageToken, radius = 6000, pageSize = 20 } = await req.json(); // parse request body
+  const body = await req.json();
 
-  let includedType: string | undefined; // default undefined
-  let strictTypeFiltering = false; // default false
-  let textQuery: string; // will be set based on category
+  const city: string | undefined = body.city;
+  const lat: number | undefined = body.lat;
+  const lng: number | undefined = body.lng;
+  const category: 'lodging'|'dining'|'attractions' = body.category;
+  const pageToken: string | undefined = body.pageToken;
+  const pageSize: number = body.pageSize ?? 20;
 
-  // Determine search parameters based on category
-  if (category === 'lodging') { 
-    // Lodging category
-    includedType = 'lodging';
-    strictTypeFiltering = true;// enforce type filtering
-    textQuery = 'hotels'; // use hotels as text query
-  } else if (category === 'dining') { // Dining category
-    includedType = 'restaurant';
-    strictTypeFiltering = true;// enforce type filtering
-    textQuery = 'restaurants';
-  } else {
-    textQuery = 'tourist attractions'; // simple catch-all for Attractions
+  if (!category) {
+    return new Response('Missing category', { status: 400 });
+  }
+  if (!city && (typeof lat !== 'number' || typeof lng !== 'number')) {
+    return new Response('Provide either city or lat/lng', { status: 400 });
   }
 
-  // Fetch places from Google Places API
+  // Build a simple text query using the category
+  let q = '';
+  if (category === 'lodging') q = city ? `hotels in ${city}` : 'hotels';
+  else if (category === 'dining') q = city ? `restaurants in ${city}` : 'restaurants';
+  else q = city ? `tourist attractions in ${city}` : 'tourist attractions';
+
+  // Pass optional lat/lng to enable proximity bias (works when user allowed geolocation)
   const data = await textSearchPage({
-    lat, lng, includedType, strictTypeFiltering, textQuery, radius, pageSize, pageToken
+    textQuery: q,
+    pageSize,
+    pageToken,
+    lat,
+    lng, 
   });
 
-  return Response.json(data);// return results as JSON
+  return Response.json(data);
 }
 
 // GET /api/places
-export async function GET() { // simple GET handler
-  return new Response('POST /api/places { lat, lng, category, pageToken? }', { status:  200 });
+export async function GET() {
+  return new Response('POST { city OR lat/lng, category, pageToken? }', { status: 200 });
 }
