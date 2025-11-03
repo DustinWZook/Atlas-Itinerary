@@ -8,7 +8,7 @@ import ItineraryCard from '@/components/ItineraryCard';
 import ItineraryModal from '@/components/ItineraryModal';
 import '@/css/itineraryList.css';
 
-import { createItinerary, getItineraries, removeItinerary } from '@/lib/repos/itineraries';
+import { getItineraries, removeItinerary } from '@/lib/repos/itineraries';
 import { itinerayRow } from '@/lib/shared/types';
 import Header from '@/components/Header';
 
@@ -51,22 +51,6 @@ export default function itineraryListPage() {
     }
   };
 
-  const handleCreateItinerary = async () => {
-    setLoading(true);
-    try {
-      await createItinerary({ name: 'Test Name', traveldestination: 'Test Destination', startdate: '1/1/2026', enddate: '1/15/2026' });
-
-      const itins = await getItineraries();
-      setItineraries(itins);
-    }
-    catch (err) {
-      console.log(err);
-    }
-    finally {
-      setLoading(false);
-    }
-  }
-
   async function handleDeleteItinerary(itineraryid: string) {
     setLoading(true);
     try {
@@ -93,10 +77,7 @@ export default function itineraryListPage() {
       <Header onSignOut={signOut} />
       <main style={{ padding: 16, maxWidth: 1200, margin: '0 auto', display: 'grid', gap: 16 }}>
         <h1>Itinerary List</h1>
-        <br />
-        <div>
-          <button onClick={() => handleCreateItinerary()} style={{ padding: '8px 12px' }}>Test Create Itinerary</button>
-        </div>
+
         {loading ? <p>Loading Itineraries...</p> : <div className='itineraryGrid'>
           {itineraries.map(itin =>
             <ItineraryCard itinerary={itin} key={itin.itineraryid} clickExpand={handleModal} clickDelete={handleDeleteItinerary} />
