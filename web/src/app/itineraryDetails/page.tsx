@@ -64,6 +64,8 @@ export default function ItineraryDetailsPage() {
     if (didInit.current) return;
     didInit.current = true;
 
+
+  
     if (!('geolocation' in navigator)) return;
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
@@ -89,9 +91,9 @@ export default function ItineraryDetailsPage() {
     setPage(1);// reset pagination to page 1
     // reset state for all categories
     setState({
-      lodging: { rows: [], nextPageToken: null, loaded: false },
-      dining: { rows: [], nextPageToken: null, loaded: false },
-      attractions: { rows: [], nextPageToken: null, loaded: false },
+      lodging: { rows: [], nextPageToken: null, loaded: false },// reset lodging
+      dining: { rows: [], nextPageToken: null, loaded: false },// reset dining
+      attractions: { rows: [], nextPageToken: null, loaded: false },// reset attractions
     });
     await fetchFirst('lodging', { center: c }); // fetch first lodging results
   }
@@ -100,19 +102,21 @@ export default function ItineraryDetailsPage() {
   async function fetchFirst(cat: Category, where: { center?: { lat: number; lng: number }; city?: string }) {
     if (!where.center && !where.city) return;
 
-    setLoading(true);
-    setErrorMsg(null);
+    setLoading(true);// show loading spinner
+    setErrorMsg(null);// clear previous error
     try {
-      const body: any = { category: cat, pageSize: 20 };
-      if (where.center) { body.lat = where.center.lat; body.lng = where.center.lng; }
-      if (where.city) { body.city = where.city; }
+      const body: any = { category: cat, pageSize: 20 };// request body
+      if (where.center) { body.lat = where.center.lat; body.lng = where.center.lng; }// use geo if available
+      if (where.city) { body.city = where.city; }// use city if available
 
+      // make POST request to /api/places
       const res = await fetch('/api/places', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
 
+      // handle non-OK responses
       if (!res.ok) {
         const txt = await res.text();
         console.error('API /api/places failed', res.status, txt);
@@ -120,59 +124,63 @@ export default function ItineraryDetailsPage() {
         return;
       }
 
+      // parse response JSON
       const { rows, nextPageToken } = await res.json();
-      setState((s) => ({ ...s, [cat]: { rows, nextPageToken, loaded: true } }));
+      setState((s) => ({ ...s, [cat]: { rows, nextPageToken, loaded: true } }));// update state with new data
     } finally {
-      setLoading(false);
+      setLoading(false);// hide loading spinner
     }
   }
 
   // Fetch more for current category (pagination)
-  async function fetchMore(cat: Category) {
-    const st = state[cat];
-    if (!st.nextPageToken) return;
-    if (!canQuery) return;
+  async function fetchMore(cat: Category) {// fetch next page for category
+    const st = state[cat];// current state for category
+    if (!st.nextPageToken) return;// no more pages
+    if (!canQuery) return;// need geo or city
 
-    setLoading(true);
-    setErrorMsg(null);
-    try {
+    setLoading(true);// show loading spinner
+    setErrorMsg(null);// clear previous error
+    try { // make POST request to /api/places
       const body: any = {
         category: cat,
         pageSize: 20,
         pageToken: st.nextPageToken,
       };
-      if (useGeo && center) { body.lat = center.lat; body.lng = center.lng; }
-      else if (city) { body.city = city; }
+      if (useGeo && center) { body.lat = center.lat; body.lng = center.lng; }// use geo if available
+      else if (city) { body.city = city; }// use city if available
 
+      // make POST request to /api/places
       const res = await fetch('/api/places', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
 
+      // handle non-OK responses
       if (!res.ok) {
-        const txt = await res.text();
-        console.error('API /api/places failed', res.status, txt);
-        setErrorMsg(txt || 'Load more failed');
+        const txt = await res.text();// read error text
+        console.error('API /api/places failed', res.status, txt);// log error
+        setErrorMsg(txt || 'Load more failed');// set error message
         return;
       }
 
-      const { rows, nextPageToken } = await res.json();
-      setState((s) => ({
+      // parse response JSON
+      const { rows, nextPageToken } = await res.json();// parse JSON
+      setState((s) => ({// update state with new data
         ...s,
-        [cat]: { rows: [...s[cat].rows, ...rows], nextPageToken, loaded: true },
+        [cat]: { rows: [...s[cat].rows, ...rows], nextPageToken, loaded: true },// append new rows
       }));
     } finally {
-      setLoading(false);
+      setLoading(false);// hide loading spinner
     }
   }
 
   // When user clicks a different category in the sidebar, dynamically fetch if not loaded
   useEffect(() => {
     if (!canQuery) return; // need geo or city
-    if (!state[selected].loaded) {
-      if (useGeo && center) fetchFirst(selected, { center });
-      else if (city) fetchFirst(selected, { city });
+    if (!state[selected].loaded) {// not loaded yet
+      if (useGeo && center) fetchFirst(selected, { center });// fetch using geo
+      else if (city) fetchFirst(selected, { city });// fetch using city
     }
   }, [selected, canQuery, useGeo, center, city]); // re-run when these change
 
@@ -182,9 +190,9 @@ export default function ItineraryDetailsPage() {
     const all = state[selected].rows; // all rows for selected category
     const start = (page - 1) * pageSize; // calculate start index
     return all.slice(start, start + pageSize); // return sliced rows for current page
-  }, [state, selected, page]);
+  }, [state, selected, page]);// recompute when state, selected category, or page changes
 
-  const totalSelected = state[selected].rows.length;
+  const totalSelected = state[selected].rows.length; // total rows for selected category
 
   // Open the modal
   function openModal(p: PlaceRow) {
@@ -195,49 +203,53 @@ export default function ItineraryDetailsPage() {
   // Add place to itinerary
   async function onAdd(details: PlaceDetails) {
     if (!itineraryId) { // require itineraryId
-      alert('Open this page with ?itineraryid=...');
+      alert('complete this functionality');
       return;
     }
     try {
       await addItineraryLocation(itineraryId, details.id); // store ONLY Google place id
-      setModalOpen(false);
-      alert(`Added: ${details.name}`);
+      setModalOpen(false);// close modal
+      alert(`Added: ${details.name}`);// success alert
     } catch (e: any) {
-      if (e?.code === '23505') alert('That place is already in this itinerary.');
-      else alert('Failed to add (see console).');
+      if (e?.code === '23505') alert('That place is already in this itinerary.');// unique violation
+      else alert('Failed to add (see console).');// generic error
       console.error(e);
     }
   }
 
 
+  // When user picks a different itinerary
   async function onItineraryPicked(id: string) {
-    setItineraryAndUrl(id);
-    if (!id) return;
+    setItineraryAndUrl(id);// update state and URL
+    if (!id) return; // no itinerary selected
 
+    // load itinerary details to get destination city
+    // fetch from Supabase
     const { data, error } = await supabase
       .from('itineraries')
       .select('traveldestination')
       .eq('itineraryid', id)
       .single();
 
+      // handle errors
     if (error) {
-      console.error('Failed to load itinerary', error);
+      console.error('Failed to load itinerary', error);// log error
       return;
     }
     const dest = (data?.traveldestination || '').trim();
-    if (!dest) return;
+    if (!dest) return;// no destination set
 
     // update page to the selected destination
-    setCenter(null);
-    setCity(dest);
-    setSelected('lodging');
-    setPage(1);
-    setState({
+    setCenter(null);// clear geo center
+    setCity(dest);// set city name
+    setSelected('lodging');// reset to lodging category
+    setPage(1);// reset to page 1
+    setState({// reset all category states
       lodging: { rows: [], nextPageToken: null, loaded: false },
       dining: { rows: [], nextPageToken: null, loaded: false },
       attractions: { rows: [], nextPageToken: null, loaded: false },
     });
-    await fetchFirst('lodging', { city: dest });
+    await fetchFirst('lodging', { city: dest });// fetch first lodging results for destination
   }
 
   // Sign out

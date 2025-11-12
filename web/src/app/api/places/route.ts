@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { textSearchPage } from '@/lib/repos/googlePlaces';
 
+// POST /api/places
 export async function POST(req: NextRequest) {
   try {
     const {
@@ -13,14 +14,17 @@ export async function POST(req: NextRequest) {
       pageSize = 20,
     } = await req.json();
 
+    // Validate required parameters
     if ((lat == null || lng == null) && !city) {
       return new Response('Missing location: provide {lat,lng} or {city}', { status: 400 });
     }
 
+    // Validate category
     let includedType: string | undefined;
     let strictTypeFiltering = false;
     let textQuery: string | undefined;
 
+    // Determine search parameters based on category
     switch (category) {
       case 'lodging':
         includedType = 'lodging';
@@ -49,6 +53,7 @@ export async function POST(req: NextRequest) {
       pageToken: pageToken ?? null,
     });
 
+    // Return the fetched data as JSON
     return Response.json(data);
   } catch (err: any) {
     console.error('POST /api/places failed:', err?.message || err);
@@ -56,6 +61,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
+// GET /api/places
 export async function GET() {
   return new Response('POST /api/places { lat,lng | city, category, pageToken? }', { status: 200 });
 }
