@@ -1,6 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+
 import { createSupabaseClient } from '@/lib/shared/supabaseClient';
 import Header from '@/components/Header';
 
@@ -79,8 +80,8 @@ export default function HomePage() {
           boxShadow: "0 2px 2px",
           transition: "background-color 0.5s ease-out"
         }}>
-          <p>You will be prompted to allow access to current location.</p>
-          <p>Click allow location to find locations you can add to your itinerary in your immediate vacinity, or choose not to allow and start entering a location into the search.</p>
+          <p>You will be prompted to allow access to current locaiton.</p>
+          <p>Click allow location to find venues you can add to your itinerary in your immediate vacinity, or choose to start entering a destination city into the search.</p>
         </div>
 
         <div style={{
@@ -94,8 +95,8 @@ export default function HomePage() {
           boxShadow: "0 2px 2px",
           transition: "background-color 0.5s ease-out"
         }}>
-          <p>If you chose to enter a location into the search, watch for your option to be suggested as you type.</p>
-          <p>Once you location is suggested, select it by clicking on it.</p>
+          <p>If you chose to enter a destination city into the search, watch for your option to be suggested as you type.</p>
+          <p>Once you city is suggested, select it by clicking on it.</p>
         </div>
 
         <div style={{
@@ -109,8 +110,8 @@ export default function HomePage() {
           boxShadow: "0 2px 2px",
           transition: "background-color 0.5s ease-out"
         }}>
-          <p>After your itinerary location is determined, either through current location or search location:</p>
-          <p>You will be provided with options for places for the itinerary.</p>
+          <p>After your city destination is determined, either through current location or search location:</p>
+          <p>You will be provided with options for venues for the itinerary.</p>
         </div>
 
         <div style={{
@@ -124,9 +125,52 @@ export default function HomePage() {
           boxShadow: "0 2px 2px",
           transition: "background-color 0.5s ease-out"
         }}>
-          <p>Clicking on one of those places will let you see more about it.</p>
+          <p>Of the venues you are provided you will be able to sort them by 3 catagories:</p>
+          <p>Lodging, Dining, and Attractions.</p>
+        </div>
+
+        <div style={{
+          backgroundColor: "white",
+          borderRadius: "10px",
+          padding: "20px",
+          margin: "10px",
+          height: "",
+          width: "200px",
+          border: "1px solid black",
+          boxShadow: "0 2px 2px",
+          transition: "background-color 0.5s ease-out"
+        }}>
+          <p>Of the catagories, You can further sort the venues by subcatagories</p>
+        </div>
+
+        <div style={{
+          backgroundColor: "white",
+          borderRadius: "10px",
+          padding: "20px",
+          margin: "10px",
+          height: "",
+          width: "200px",
+          border: "1px solid black",
+          boxShadow: "0 2px 2px",
+          transition: "background-color 0.5s ease-out"
+        }}>
+          <p>Clicking on one of those venues will let you see more about it.</p>
           <p>Click add to itinerary to start creating your itinerary or click cancel to return to looking at other options.</p>
-          <p></p>
+        </div>
+
+        <div style={{
+          backgroundColor: "white",
+          borderRadius: "10px",
+          padding: "20px",
+          margin: "10px",
+          height: "",
+          width: "200px",
+          border: "1px solid black",
+          boxShadow: "0 2px 2px",
+          transition: "background-color 0.5s ease-out"
+        }}>
+          <p>After selecting add to itinerary, </p>
+          <img src="C:\Users\User\Documents\Atlas-Itinerary\web\src\ImageTest\Test.jpg" alt="testing" width="500" height="600"></img>
         </div>
 
       </main >
