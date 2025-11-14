@@ -1,15 +1,19 @@
 'use client';
 
+// City search component using Google Maps Place Autocomplete Element
 import Script from 'next/script';
 import { useEffect, useRef, useState } from 'react';
 import type { CityPick } from '@/lib/shared/types';
 
-export default function CitySearch({ onCity }: { onCity: (c: CityPick) => void }) {
-  const hostRef = useRef<HTMLDivElement | null>(null);
-  const [ready, setReady] = useState(false);
+// Main CitySearch component
+// Props: onCity - callback function when a city is selected
+export default function CitySearch({ onCity }: { onCity: (c: CityPick) => void }) {// onCity callback
+  const hostRef = useRef<HTMLDivElement | null>(null); // ref to host div
+  const [ready, setReady] = useState(false); // state to track if Google Maps script is loaded
 
+  // Effect to initialize Place Autocomplete Element
   useEffect(() => {
-    if (!ready || !hostRef.current) return;
+    if (!ready || !hostRef.current) return; // wait until script is ready and host is mounted
 
     const g = (window as any).google;
     if (!g?.maps?.places?.PlaceAutocompleteElement) return;

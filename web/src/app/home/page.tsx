@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { createSupabaseClient } from '@/lib/shared/supabaseClient';
 import Header from '@/components/Header';
 
+import Image from 'next/image';
+import testImg from '@/ImageTest/Test.jpg';
+
 export default function HomePage() {
   const router = useRouter();
   const supabase = createSupabaseClient();
@@ -170,7 +173,7 @@ export default function HomePage() {
           transition: "background-color 0.5s ease-out"
         }}>
           <p>After selecting add to itinerary, </p>
-          <img src="C:\Users\User\Documents\Atlas-Itinerary\web\src\ImageTest\Test.jpg" alt="testing" width="500" height="600"></img>
+          <Image src={testImg} alt="testing" width={500} height={600} />
         </div>
 
       </main >

@@ -2,25 +2,26 @@
 
 import type { Category } from '@/lib/shared/types';
 
-
+// Category labels for display
+// Mapping of category keys to user-friendly labels
 const LABELS: Record<Category, string> = {
   lodging: 'Lodging',
   dining: 'Dining',
   attractions: 'Attractions',
 };
 
-
+// Sidebar component for selecting categories
 export default function CategorySidebar({
-  selected,
-  onSelect,
-  disabled,
+  selected, // currently selected category
+  onSelect, // callback when a category is selected
+  disabled, // whether the sidebar is disabled
 }: {
-  selected: Category;
-  onSelect: (c: Category) => void;
-  disabled?: boolean;
+  selected: Category; // currently selected category
+  onSelect: (c: Category) => void; // callback when a category is selected
+  disabled?: boolean; // whether the sidebar is disabled
 }) {
-  const cats: Category[] = ['lodging', 'dining', 'attractions'];
-  const SIDEBAR_W = 160;
+  const cats: Category[] = ['lodging', 'dining', 'attractions'];// list of categories
+  const SIDEBAR_W = 160;// sidebar width
 
   return (
     <nav
