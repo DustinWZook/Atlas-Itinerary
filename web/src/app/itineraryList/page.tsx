@@ -1,25 +1,24 @@
 'use client';
 
 import Link from 'next/link';
-import { createSupabaseClient } from '@/lib/shared/supabaseClient';
+import { createSupabaseBrowserClient } from '@/lib/supabase/client';
 import { useEffect, useState } from 'react';
 
 import ItineraryCard from '@/components/ItineraryCard';
 import ItineraryModal from '@/components/ItineraryModal';
 import '@/css/itineraryList.css';
 
-import { getItineraries, removeItinerary } from '@/lib/repos/itineraries';
-import { itinerayRow } from '@/lib/shared/types';
+import { getItineraries, removeItinerary, ItineraryRow } from '@/lib/repos/itineraries';
 import Header from '@/components/Header';
 
 export default function itineraryListPage() {
-  const supabase = createSupabaseClient();
+  const supabase = createSupabaseBrowserClient();
 
-  const [itineraries, setItineraries] = useState<any[]>([]);
+  const [itineraries, setItineraries] = useState<ItineraryRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedItinerary, setSelectedItinerary] = useState<itinerayRow | null>(null);
+  const [selectedItinerary, setSelectedItinerary] = useState<ItineraryRow | null>(null);
 
   useEffect(() => {
     const fetchItineraries = async () => {
@@ -52,6 +51,8 @@ export default function itineraryListPage() {
   };
 
   async function handleDeleteItinerary(itineraryid: string) {
+    setModalOpen(false);
+
     setLoading(true);
     try {
       await removeItinerary(itineraryid);
@@ -67,7 +68,7 @@ export default function itineraryListPage() {
     }
   }
 
-  function handleModal(itinerary: itinerayRow) {
+  function handleModal(itinerary: ItineraryRow) {
     setModalOpen(true);
     setSelectedItinerary(itinerary);
   }
@@ -80,11 +81,11 @@ export default function itineraryListPage() {
 
         {loading ? <p>Loading Itineraries...</p> : <div className='itineraryGrid'>
           {itineraries.map(itin =>
-            <ItineraryCard itinerary={itin} key={itin.itineraryid} clickExpand={handleModal} clickDelete={handleDeleteItinerary} />
+            <ItineraryCard itinerary={itin} key={itin.itineraryid} clickExpand={handleModal} />
           )}
         </div>}
 
-        <ItineraryModal open={modalOpen} itinerary={selectedItinerary} onClose={() => setModalOpen(false)} />
+        <ItineraryModal open={modalOpen} itinerary={selectedItinerary} onClose={() => setModalOpen(false)} onDelete={handleDeleteItinerary} />
       </main>
     </>
   );

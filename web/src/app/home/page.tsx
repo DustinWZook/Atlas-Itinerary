@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-import { createSupabaseClient } from '@/lib/shared/supabaseClient';
+import { createSupabaseBrowserClient } from '@/lib/supabase/client';
 import Header from '@/components/Header';
 
 import Image from 'next/image';
@@ -10,7 +10,7 @@ import testImg from '@/ImageTest/Test.jpg';
 
 export default function HomePage() {
   const router = useRouter();
-  const supabase = createSupabaseClient();
+  const supabase = createSupabaseBrowserClient();
 
   const signOut = async () => {
     try {

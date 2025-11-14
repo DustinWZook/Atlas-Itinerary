@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createSupabaseClient } from '@/lib/shared/supabaseClient';
+import { createSupabaseBrowserClient } from '@/lib/supabase/client';
 
 type ItineraryRow = {
   itineraryid: string;
@@ -18,7 +18,7 @@ export default function ItineraryPicker({
   onChange: (id: string, dest?: string | null) => void;
   disabled?: boolean;
 }) {
-  const supabase = createSupabaseClient();
+  const supabase = createSupabaseBrowserClient();
   const [items, setItems] = useState<ItineraryRow[]>([]);
   const [loading, setLoading] = useState(true);
 

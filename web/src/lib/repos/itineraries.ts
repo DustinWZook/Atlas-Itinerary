@@ -1,4 +1,4 @@
-import { createSupabaseClient } from '@/lib/shared/supabaseClient';
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export type ItineraryRow = {
   itineraryid: string;
@@ -10,7 +10,7 @@ export type ItineraryRow = {
 };
 
 export async function getItineraries(): Promise<ItineraryRow[]> {
-  const supabase = createSupabaseClient();
+  const supabase = createSupabaseBrowserClient();
   const { data: auth } = await supabase.auth.getUser();
   const uid = auth.user?.id;
   if (!uid) return [];
@@ -38,7 +38,7 @@ export async function createItinerary(input: {
   startdate: string;
   enddate: string;
 }): Promise<{ itineraryid: string }> {
-  const supabase = createSupabaseClient();
+  const supabase = createSupabaseBrowserClient();
   const { data: auth } = await supabase.auth.getUser();
   const uid = auth.user?.id;
   if (!uid) throw new Error('Not signed in.');
@@ -61,7 +61,7 @@ export async function createItinerary(input: {
 
 // Removes the itinerary row identified by the itineraryid parameter passed
 export async function removeItinerary(itineraryid: string) {
-    const supabase = createSupabaseClient();
+    const supabase = createSupabaseBrowserClient();
 
     const response = await supabase
         .from('itineraries')

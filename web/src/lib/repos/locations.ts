@@ -1,4 +1,4 @@
-import { createSupabaseClient } from '@/lib/shared/supabaseClient';
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 // Type definition for a location row in the database
 export type LocationRow = {
@@ -13,7 +13,7 @@ export type LocationRow = {
 
 // List all saved places for an itinerary
 export async function getLocations(itineraryid: string): Promise<LocationRow[]> {
-  const supabase = createSupabaseClient();
+  const supabase = createSupabaseBrowserClient();
   const { data, error } = await supabase // build the sql query
     .from('locations')
     .select('*')
@@ -29,7 +29,7 @@ export async function addItineraryLocation(
   placeid: string,
   opts?: { startdate?: string|null; enddate?: string|null; starttime?: string|null; endtime?: string|null }
 ) {
-  const supabase = createSupabaseClient();
+  const supabase = createSupabaseBrowserClient();
   //build and run the insert query
   const { error } = await supabase.from('locations').insert({
     itineraryid,
@@ -44,7 +44,7 @@ export async function addItineraryLocation(
 
 // Remove a saved place from an itinerary
 export async function removeItineraryLocation(itineraryid: string, placeid: string) {
-  const supabase = createSupabaseClient();
+  const supabase = createSupabaseBrowserClient();
   const { error } = await supabase.from('locations').delete().match({ itineraryid, placeid }); // delete query
   if (error) throw error; // throw any errors
 }

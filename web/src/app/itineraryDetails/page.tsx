@@ -13,11 +13,11 @@ import Header from '@/components/Header';
 
 import type { Category, CityPick, PlaceDetails, PlaceRow } from '@/lib/shared/types';
 import { addItineraryLocation } from '@/lib/repos/locations';
-import { createSupabaseClient } from '@/lib/shared/supabaseClient';
+import { createSupabaseBrowserClient } from '@/lib/supabase/client';
 
 // Main Itinerary Details Page
 export default function ItineraryDetailsPage() {
-  const supabase = createSupabaseClient();
+  const supabase = createSupabaseBrowserClient();
 
   // Itinerary ID from query string (read once without Suspense)
   const [itineraryId, setItineraryId] = useState(''); // holds ?itineraryid=...

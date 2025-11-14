@@ -18,9 +18,12 @@
 }
 
 .itineraryInfo h2 {
+    text-align: center;
     color: white;
 }
 
 .itineraryInfo p {
+    text-align: center;
+    margin-top: 20px;
     color: rgb(114, 114, 114);
 }

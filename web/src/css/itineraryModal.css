@@ -24,3 +24,12 @@
 .itineraryModal h2, h3 {
     text-align: center;
 }
+
+.buttons {
+    margin-top: 10px;
+}
+
+.buttons button {
+    padding: 4px;
+    margin-right: 12px;
+}
