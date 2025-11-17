@@ -7,6 +7,9 @@ import Header from '@/components/Header';
 
 import Image from 'next/image';
 import testImg from '@/ImageTest/Test.jpg';
+import swordTest from '@/ImageTest/Sword.png';
+import '@/css/instructions.css';
+
 
 export default function HomePage() {
   const router = useRouter();
@@ -41,141 +44,67 @@ export default function HomePage() {
         <h1 style={{ textAlign: 'center' }}>Congratulations, you have signed in! Now what?</h1>
         <p style={{ textAlign: 'center' }}>Now for what you came for, itinerary creation!!</p>
 
-        <div style={{
-          backgroundColor: "white",
-          borderRadius: "10px",
-          padding: "20px",
-          margin: "10px",
-          height: "",
-          width: "200px",
-          border: "1px solid black",
-          boxShadow: "0 2px 2px",
-          transition: "background-color 0.5s ease-out"
-        }}>
-          <p>First users will click on create itinerary.</p>
-          <p>Create Itinerary is the second option, next to home, at the top of the webstie.</p>
-          <p>(Image of mouse clicking Create Itinerary)</p>
+        <div className='instructions'>
+          <p>
+            First users will click on create itinerary.
+            <br/> Create Itinerary is the second option, next to home, at the top of the webstie.
+            <br/> (Image of mouse clicking Create Itinerary)
+          </p>
         </div>
 
-        <div style={{
-          backgroundColor: "white",
-          borderRadius: "10px",
-          padding: "20px",
-          margin: "10px",
-          height: "",
-          width: "200px",
-          border: "1px solid black",
-          boxShadow: "0 2px 2px",
-          transition: "background-color 0.5s ease-out"
-        }}>
-          <p>After you click on Create Itinerary you should be greeted with this screen: </p>
-          <p>(image of Create Itinerary before location access has been allowed)</p>
+        <div className='instructions'>
+          <p>
+            After you click on Create Itinerary you should be greeted with this screen:
+          <br/>(image of Create Itinerary before location access has been allowed)
+          </p>
         </div>
 
-        <div style={{
-          backgroundColor: "white",
-          borderRadius: "10px",
-          padding: "20px",
-          margin: "10px",
-          height: "",
-          width: "200px",
-          border: "1px solid black",
-          boxShadow: "0 2px 2px",
-          transition: "background-color 0.5s ease-out"
-        }}>
-          <p>You will be prompted to allow access to current locaiton.</p>
-          <p>Click allow location to find venues you can add to your itinerary in your immediate vacinity, or choose to start entering a destination city into the search.</p>
+        <div className='instructions'>
+          <p>
+            You will be prompted to allow access to current locaiton.
+          <br/>Click allow location to find venues you can add to your itinerary in your immediate vacinity, or choose to start entering a destination city into the search.
+          </p>
         </div>
 
-        <div style={{
-          backgroundColor: "white",
-          borderRadius: "10px",
-          padding: "20px",
-          margin: "10px",
-          height: "",
-          width: "200px",
-          border: "1px solid black",
-          boxShadow: "0 2px 2px",
-          transition: "background-color 0.5s ease-out"
-        }}>
-          <p>If you chose to enter a destination city into the search, watch for your option to be suggested as you type.</p>
-          <p>Once you city is suggested, select it by clicking on it.</p>
+        <div className='instructions'>
+          <p>
+            If you chose to enter a destination city into the search, watch for your option to be suggested as you type.
+            <br/>Once you city is suggested, select it by clicking on it.
+            </p>
         </div>
 
-        <div style={{
-          backgroundColor: "white",
-          borderRadius: "10px",
-          padding: "20px",
-          margin: "10px",
-          height: "",
-          width: "200px",
-          border: "1px solid black",
-          boxShadow: "0 2px 2px",
-          transition: "background-color 0.5s ease-out"
-        }}>
-          <p>After your city destination is determined, either through current location or search location:</p>
-          <p>You will be provided with options for venues for the itinerary.</p>
+        <div className='instructions'>
+          <p>
+            After your city destination is determined, either through current location or search location:
+          <br/> You will be provided with options for venues for the itinerary.
+          </p>
         </div>
 
-        <div style={{
-          backgroundColor: "white",
-          borderRadius: "10px",
-          padding: "20px",
-          margin: "10px",
-          height: "",
-          width: "200px",
-          border: "1px solid black",
-          boxShadow: "0 2px 2px",
-          transition: "background-color 0.5s ease-out"
-        }}>
-          <p>Of the venues you are provided you will be able to sort them by 3 catagories:</p>
-          <p>Lodging, Dining, and Attractions.</p>
+        <div className='instructions'>
+          <p>
+            Of the venues you are provided you will be able to sort them by 3 catagories:
+          <br/> Lodging, Dining, and Attractions.
+          </p>
         </div>
 
-        <div style={{
-          backgroundColor: "white",
-          borderRadius: "10px",
-          padding: "20px",
-          margin: "10px",
-          height: "",
-          width: "200px",
-          border: "1px solid black",
-          boxShadow: "0 2px 2px",
-          transition: "background-color 0.5s ease-out"
-        }}>
+        <div className='instructions'>
           <p>Of the catagories, You can further sort the venues by subcatagories</p>
         </div>
 
-        <div style={{
-          backgroundColor: "white",
-          borderRadius: "10px",
-          padding: "20px",
-          margin: "10px",
-          height: "",
-          width: "200px",
-          border: "1px solid black",
-          boxShadow: "0 2px 2px",
-          transition: "background-color 0.5s ease-out"
-        }}>
-          <p>Clicking on one of those venues will let you see more about it.</p>
-          <p>Click add to itinerary to start creating your itinerary or click cancel to return to looking at other options.</p>
+        <div className='instructions'>
+
+          <p>
+            Clicking on one of those venues will let you see more about it.
+            <br /> Click add to itinerary to start creating your itinerary or click cancel to return to looking at other options.
+          </p>
+          <Image className='image-container' src={testImg} alt="testing" />
         </div>
 
-        <div style={{
-          backgroundColor: "white",
-          borderRadius: "10px",
-          padding: "20px",
-          margin: "10px",
-          height: "",
-          width: "200px",
-          border: "1px solid black",
-          boxShadow: "0 2px 2px",
-          transition: "background-color 0.5s ease-out"
-        }}>
+
+        <div className='instructions'>
           <p>After selecting add to itinerary, </p>
-          <Image src={testImg} alt="testing" width={500} height={600} />
+          <Image className='image-container' src={swordTest} alt="testing" />
         </div>
-
       </main >
     </>
   );
