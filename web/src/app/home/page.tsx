@@ -63,6 +63,7 @@ export default function HomePage() {
           <p>
             You will be prompted to allow access to current locaiton.
           <br/>Click allow location to find venues you can add to your itinerary in your immediate vacinity, or choose to start entering a destination city into the search.
+          <br/> (image of mouse clicking location access allowed)
           </p>
         </div>
 
@@ -70,6 +71,7 @@ export default function HomePage() {
           <p>
             If you chose to enter a destination city into the search, watch for your option to be suggested as you type.
             <br/>Once you city is suggested, select it by clicking on it.
+            <br/> (image of user typing in a location)
             </p>
         </div>
 
@@ -77,6 +79,7 @@ export default function HomePage() {
           <p>
             After your city destination is determined, either through current location or search location:
           <br/> You will be provided with options for venues for the itinerary.
+            <br/> (image of venues in lodging for example desitination)
           </p>
         </div>
 
@@ -84,11 +87,14 @@ export default function HomePage() {
           <p>
             Of the venues you are provided you will be able to sort them by 3 catagories:
           <br/> Lodging, Dining, and Attractions.
+          <br/>(image of focused view on catagories)
           </p>
         </div>
 
         <div className='instructions'>
-          <p>Of the catagories, You can further sort the venues by subcatagories</p>
+          <p>Of the catagories, You can further sort the venues by subcatagories
+            <br/>(image focus on filter options)
+          </p>
         </div>
 
         <div className='instructions'>
@@ -96,14 +102,56 @@ export default function HomePage() {
           <p>
             Clicking on one of those venues will let you see more about it.
             <br /> Click add to itinerary to start creating your itinerary or click cancel to return to looking at other options.
+            <br/>(Image of expanded venue card)
           </p>
           <Image className='image-container' src={testImg} alt="testing" />
         </div>
 
 
         <div className='instructions'>
-          <p>After selecting add to itinerary, </p>
+          <p>After selecting add to itinerary, 
+            <br/> select the start date, end date, start time, and end time for the venue
+            <br/>(image of add to itinerary options)
+          </p>
           <Image className='image-container' src={swordTest} alt="testing" />
+        </div>
+
+        <div className='instructions'>
+          <p>After selecting the dates and times, 
+            <br/> click (placeholder) to complete the process and add the venue to the itinerary
+            <br/>(image of calendar with example data)
+          </p>
+          <Image className='image-container' src={testImg} alt="testing"/>
+        </div>
+
+        <div className='instructions'>
+          <p>continue this process until you are satisfied with the calendar
+          <br/> then click Save As
+          <br/> (image of Save As button being clicked)  
+            </p>
+            <Image className='image-container' src={swordTest} alt="testing" />
+        </div>
+
+        <div className='instructions'>
+          <p>After clicking Save As, 
+            <br/> Name you itinerary
+            <br/>(image of itinerary naming interface)
+          </p>
+          <Image className='image-container' src={testImg} alt="testing" />
+        </div>
+
+        <div className='instructions'>
+          <p>After completing the naming process, 
+            <br/> You have completed your itinerary
+            
+          </p>
+          </div>
+
+        <div className='instructions'>
+          <p>To view your itinerary go to Itinerary List 
+            <br/>(image of clicking on Itinerary List)
+          </p>
+          <Image className='image-container' src={testImg} alt="testing" />
         </div>
       </main >
     </>
