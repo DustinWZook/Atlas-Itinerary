@@ -28,3 +28,109 @@
     padding: 6px;
     border-radius: 16px;
 }
+
+.dropdown {
+    position: relative;
+}
+
+
+.dropdown .dropbtn {
+    cursor: pointer;
+    color: orange;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+
+.dropdown a {
+    display: block;
+    color: black;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+
+.dropdown a:hover {
+    background-color: hsl(0, 0%, 80%);
+}
+
+
+.dropdown button {
+    background-color: hsl(0, 0%, 80%);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown button:hover {
+    background-color: hsl(0, 0%, 70%);
+}
+
+.dropdown .content {
+    position: absolute;
+    background-color: hsl(0, 0%, 90%);
+    min-width: 120px;
+    border-radius: 6px;
+    box-shadow: 2px 2px 5px hsla(0, 0%, 0%, 0.8);
+    z-index: 1000;
+    padding: 5px 0;
+
+    
+    max-height: 0;          
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition:
+        max-height 0.3s ease,
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+.dropdown .content.open,
+.dropdown:hover .content {
+    max-height: 300px;       
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+.dropdown .content a,
+.dropdown .content button {
+    color: #333;      /* text color */
+    background-color: #f5f5f5;  /* lighter background */
+}
+.dropdown .content a:hover,
+.dropdown .content button:hover {
+    background-color: #e0e0e0;
+}
+
+
+
+/* Each row (location, email) */
+.dropdown .dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 8px;
+}
+
+/* Icon (📍, 📧) */
+.dropdown .dropdown-icon {
+    font-size: 1.1em;
+}
+
+/* Text (actual location/email) */
+.dropdown .dropdown-text {
+    font-size: 0.95em;
+    color: #333;
+}
+
+/* Optional: hover for the whole row */
+.dropdown .dropdown-item:hover {
+    background-color: hsl(0, 0%, 85%);
+}
+
