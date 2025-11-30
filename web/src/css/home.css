@@ -1,0 +1,229 @@
+/* ========== HERO SECTION (HOME PAGE) ========== */
+.hero {
+  position: relative;
+  height: 70vh;
+  width: 100%;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Background image (Next.js <Image fill />) */
+.hero-img {
+  object-fit: cover !important;
+  z-index: -1;
+}
+
+/* Text on top of the image */
+.hero-content {
+  text-align: center;
+  color: white;
+  text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.7);
+  padding: 20px;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.hero-subtitle {
+  font-size: 1.4rem;
+  margin-bottom: 24px;
+}
+
+/* Instruction link button */
+.instruction-link {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.instruction-link:hover {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+
+/* ========== PURPOSE SECTION (HOME PAGE) ========== */
+.purpose {
+  max-width: 900px;
+  margin: 40px auto;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.purpose h2 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.purpose p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+
+/* ========== INSTRUCTIONS PAGE LAYOUT ========== */
+
+.instructions-page {
+  max-width: 1200px;
+  margin: 20px auto 40px auto;
+  padding: 0 20px 40px 20px;
+}
+
+/* Sticky top bar: title + back link */
+.instructions-header {
+  position: sticky;
+  top: 130px;           /* adjust if header height changes */
+  z-index: 900;
+
+  background-color: #ffffff;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: left;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+.instructions-header h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+/* Back to Home button */
+.back-link {
+  text-decoration: none;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #f7f7f7;
+  color: #333;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.back-link:hover {
+  background-color: #ececec;
+  border-color: #bbb;
+}
+
+/* Two-column layout: left steps index + right content */
+.instructions-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 24px;
+}
+
+/* Left column: steps index */
+.steps-index {
+  border-right: 1px solid #eee;
+  padding-right: 16px;
+}
+
+.steps-index h2 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+
+.steps-index ol {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.steps-index li {
+  margin-bottom: 6px;
+}
+
+.steps-index a {
+  text-decoration: none;
+  font-size: 0.95rem;
+  color: #0070f3;
+}
+
+.steps-index a:hover {
+  text-decoration: underline;
+}
+
+/* Right column container */
+.instruction-sections {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Individual step cards */
+.step-card {
+  background-color: #fafafa;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.step-card h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.15rem;
+}
+
+.step-card p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Images inside instructions */
+.image-container {
+  display: block;
+  margin-top: 10px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* General text spacing in instructions */
+.instructions p {
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 18px;
+  }
+
+  .instruction-link {
+    font-size: 1rem;
+    padding: 10px 18px;
+  }
+
+  .instructions-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .steps-index {
+    border-right: none;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+
+  .instructions-header {
+    top: 70px; 
+  }
+}

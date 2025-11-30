@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import '@/css/navBar.css';
 
+
 type NavBarProps = {
   onSignOut: () => void;
   currentLocation?: string; // e.g. "Dallas, TX"
