@@ -11,7 +11,7 @@ import CreateItineraryButton from '@/components/CreateItineraryButton';
 import ItineraryPicker from '@/components/ItineraryPicker';
 import Header from '@/components/Header';
 import '@/css/ItineraryDetails.css';
-import '@/css/Header.css'; 
+// import '@/css/Header.css'; 
 
 
 import type { Category, CityPick, PlaceDetails, PlaceRow } from '@/lib/shared/types';

@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import type { PlaceDetails, PlaceRow } from '@/lib/shared/types';
 import { photoUrl } from '@/lib/shared/photo';
-//import '@/css/PlaceModal.css';
 import styles from '@/css/PlaceModal.module.css';
 
 
