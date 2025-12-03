@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { createSupabaseBrowserClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 import '@/css/navBar.css';
+import { User } from '@supabase/supabase-js';
 
 
 type NavBarProps = {
@@ -11,6 +13,25 @@ type NavBarProps = {
 
 export default function NavBar({ onSignOut, currentLocation, email }: NavBarProps) {
     const [open, setOpen] = useState(false);
+    const [user, setUser] = useState<User>();
+    const [avatarUrl, setAvatarUrl] = useState<string>();
+
+    const supabase = createSupabaseBrowserClient();
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const {data} = await supabase.auth.getSession();
+
+            if (data.session?.user != null) {
+                //console.log(data.session.user);
+                //console.log(data.session.user.user_metadata.avatar_url);
+                setUser(data.session.user);
+                setAvatarUrl(data.session.user.user_metadata.avatar_url);
+            }
+        }
+
+        fetchUser();
+    }, [])
 
     return (
         <nav className='navBar'>
@@ -28,11 +49,10 @@ export default function NavBar({ onSignOut, currentLocation, email }: NavBarProp
                     </span>
 
                     <div className={`content ${open ? "open" : ""}`}>
-                        {/* Location row */}
-                        <div className="dropdown-item">
-                            <span className="dropdown-icon">📍</span>
-                            <span className="dropdown-text">
-                                {currentLocation || 'Location unavailable'}
+                        <div className='dropdown-item'>
+                            <img src={avatarUrl} alt='userImg' className='avatarImg'/>
+                            <span className='dropdown-text'>
+                                {user?.user_metadata.full_name}
                             </span>
                         </div>
 
@@ -40,7 +60,15 @@ export default function NavBar({ onSignOut, currentLocation, email }: NavBarProp
                         <div className="dropdown-item">
                             <span className="dropdown-icon">📧</span>
                             <span className="dropdown-text">
-                                {email || 'Email unavailable'}
+                                {user?.user_metadata.email}
+                            </span>
+                        </div>
+
+                        {/* Location row */}
+                        <div className="dropdown-item">
+                            <span className="dropdown-icon">📍</span>
+                            <span className="dropdown-text">
+                                {currentLocation || 'Location unavailable'}
                             </span>
                         </div>
 

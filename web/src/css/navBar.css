@@ -125,6 +125,13 @@
     font-size: 1.1em;
 }
 
+.dropdown .avatarImg {
+    border-radius: 50px;
+    width: 25%;
+    height: auto;
+    font-size: .8em;
+}
+
 /* Text (actual location/email) */
 .dropdown .dropdown-text {
     font-size: 0.95em;
