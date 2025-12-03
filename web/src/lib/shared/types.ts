@@ -4,6 +4,8 @@ export type Category = 'lodging' | 'dining' | 'attractions';
 
 // Minimal info needed to render a card in the grid.
 export type PlaceRow = {
+  userRatingCount: number | undefined;
+  rating: number | undefined;
   id: string;
   name: string;
   address: string;

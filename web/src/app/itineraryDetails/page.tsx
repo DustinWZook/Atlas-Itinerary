@@ -10,6 +10,9 @@ import PlaceModal from '@/components/PlaceModal';
 import CreateItineraryButton from '@/components/CreateItineraryButton';
 import ItineraryPicker from '@/components/ItineraryPicker';
 import Header from '@/components/Header';
+import '@/css/ItineraryDetails.css';
+import '@/css/Header.css'; 
+
 
 import type { Category, CityPick, PlaceDetails, PlaceRow } from '@/lib/shared/types';
 import { addItineraryLocation } from '@/lib/repos/locations';
@@ -201,21 +204,30 @@ export default function ItineraryDetailsPage() {
   }
 
   // Add place to itinerary
-  async function onAdd(details: PlaceDetails) {
-    if (!itineraryId) { // require itineraryId
-      alert('complete this functionality');
+  async function onAdd(details: PlaceDetails, opts: {
+    startdate: string | null;
+    enddate: string | null;
+    starttime: string | null;
+    endtime: string | null;
+  }) {
+    if (!itineraryId) {
+      alert('Please select an itinerary first.');
       return;
     }
     try {
-      await addItineraryLocation(itineraryId, details.id); // store ONLY Google place id
-      setModalOpen(false);// close modal
-      alert(`Added: ${details.name}`);// success alert
-    } catch (e: any) {
-      if (e?.code === '23505') alert('That place is already in this itinerary.');// unique violation
-      else alert('Failed to add (see console).');// generic error
-      console.error(e);
+      await addItineraryLocation(itineraryId, details.id, {
+        startdate: opts.startdate ?? null,
+        enddate: opts.enddate ?? null,
+        starttime: opts.starttime ?? null,
+        endtime: opts.endtime ?? null,
+      });
+      alert('Place added to itinerary!');
+    } catch (err) {
+      console.error('Failed to add place to itinerary', err);
+      alert('Failed to add place to itinerary. See console for details.');
     }
-  }
+      setModalOpen(false);// close modal
+    }
 
 
   // When user picks a different itinerary
@@ -264,88 +276,118 @@ export default function ItineraryDetailsPage() {
   // UI
   return (
     <>
-      <Header onSignOut={signOut} />
-      <main style={{ padding: 16, maxWidth: 1200, margin: '0 auto', display: 'grid', gap: 16 }}>
-        <h1 style={{ marginBottom: 0 }}>Itinerary Details (Create)</h1>
-        <p style={{ marginTop: 4, opacity: 0.8 }}>
-          Pick a city (or allow location), then switch categories and add places.
-        </p>
+  <main className="it-page">
+    <Header onSignOut={signOut} />
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h1>Itineraries</h1>
-          <CreateItineraryButton />
-        </div>
+    <h1 className="it-h1">Itinerary Details (Create)</h1>
+    <p className="it-subtle">
+      Pick a city (or allow location), then switch categories and add places.
+    </p>
 
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
-          <ItineraryPicker
-            value={itineraryId}
-            onChange={onItineraryPicked}
-          />
-        </div>
+    <div className="it-toolbar">
+      <h2 className="it-title">Itineraries</h2>
+      <CreateItineraryButton />
+    </div>
 
-        {errorMsg && <p style={{ color: '#b91c1c' }}>Error: {errorMsg}</p>}
+    <div className="it-itinsRow">
+      <ItineraryPicker
+        value={itineraryId}
+        onChange={onItineraryPicked}
+      />
+    </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: 24, alignItems: 'start' }}>
-          <CategorySidebar
-            selected={selected}
-            onSelect={(c) => { setSelected(c); setPage(1); }}
-            disabled={loading || !canQuery}
-          />
+    {errorMsg && <p className="it-error">Error: {errorMsg}</p>}
 
-          <section style={{ display: 'grid', gap: 16 }}>
-            <header style={{ display: 'grid', gap: 8 }}>
-              <CitySearch onCity={onCitySelect} />
-              <p style={{ margin: 0 }}>
-                Showing <strong>{selected}</strong>{' '}
-                {useGeo ? (
-                  <span>near <strong>your location</strong></span>
-                ) : city ? (
-                  <>in <strong>{city}</strong></>
-                ) : (
-                  <i>(type a city or allow location)</i>
-                )}
-              </p>
-            </header>
+    <div className="it-columns">
+      <div className="it-sidebar">
+        <CategorySidebar
+          selected={selected}
+          onSelect={(c) => {
+            setSelected(c);
+            setPage(1);
+          }}
+          disabled={loading || !canQuery}
+        />
+      </div>
 
-            {loading && !state[selected].loaded && <p>Loading…</p>}
+      <section className="it-main">
+        <header className="it-headerRow">
+  <div className="it-cityWrap">
+    <CitySearch onCity={onCitySelect} />
+  </div>
 
-            {state[selected].rows.length > 0 && (
-              <>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16 }}>
-                  {rows.map((p) => (
-                    <PlaceCard key={p.id} place={p} onClick={openModal} />
-                  ))}
-                </div>
+  <p className="it-context">
+    Showing <strong>{selected}</strong>{' '}
+    {useGeo ? (
+      <span>near <strong>your location</strong></span>
+    ) : city ? (
+      <>in <strong>{city}</strong></>
+    ) : (
+      <i>(type a city or allow location)</i>
+    )}
+  </p>
+</header>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <button onClick={() => setPage((x) => Math.max(1, x - 1))} disabled={page === 1}>Prev</button>
-                  <span>Page {page} of {Math.max(1, Math.ceil(totalSelected / pageSize))}</span>
-                  <button
-                    onClick={() => setPage((x) => (x * pageSize < totalSelected ? x + 1 : x))}
-                    disabled={page * pageSize >= totalSelected}
-                  >
-                    Next
-                  </button>
-                </div>
 
-                {state[selected].nextPageToken && (
-                  <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <button onClick={() => fetchMore(selected)} disabled={loading}>
-                      {loading ? 'Loading…' : 'Load more'}
-                    </button>
-                  </div>
-                )}
-              </>
+        {loading && !state[selected].loaded && <p>Loading…</p>}
+
+        {state[selected].rows.length > 0 && (
+          <>
+            <div className="it-resultsGrid">
+              {rows.map((p) => (
+                <PlaceCard key={p.id} place={p} onClick={openModal} />
+              ))}
+            </div>
+
+            <div className="it-pager">
+              <button
+                onClick={() => setPage((x) => Math.max(1, x - 1))}
+                disabled={page === 1}
+              >
+                Prev
+              </button>
+
+              <span>
+                Page {page} of {Math.max(1, Math.ceil(totalSelected / pageSize))}
+              </span>
+
+              <button
+                onClick={() =>
+                  setPage((x) => (x * pageSize < totalSelected ? x + 1 : x))
+                }
+                disabled={page * pageSize >= totalSelected}
+              >
+                Next
+              </button>
+            </div>
+
+            {state[selected].nextPageToken && (
+              <div className="it-loadMore">
+                <button onClick={() => fetchMore(selected)} disabled={loading}>
+                  {loading ? 'Loading…' : 'Load more'}
+                </button>
+              </div>
             )}
+          </>
+        )}
 
-            {!loading && state[selected].loaded && state[selected].rows.length === 0 && (
-              <p>No results for this area.</p>
-            )}
-          </section>
-        </div>
+        {!loading && state[selected].loaded && state[selected].rows.length === 0 && (
+          <p>No results for this area.</p>
+        )}
+      </section>
+    </div>
 
-        <PlaceModal open={modalOpen} place={active} onClose={() => setModalOpen(false)} onAdd={onAdd} />
-      </main>
+    <PlaceModal
+      open={modalOpen}
+      place={active}
+      onClose={() => setModalOpen(false)}
+      onAdd={onAdd}
+    />
+
+
+  </main>
+        
     </>
-  );
+);
+
 }
