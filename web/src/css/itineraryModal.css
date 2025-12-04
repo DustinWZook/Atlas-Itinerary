@@ -18,7 +18,7 @@
     box-shadow: 0 4px 8px;
     border-radius: 10px;
     padding: 20px;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .itineraryModal h2, h3 {
@@ -32,4 +32,31 @@
 .buttons button {
     padding: 4px;
     margin-right: 12px;
+}
+
+/* CSS for smaller devices */
+@media screen and (max-width: 640px) {
+    .itineraryModal {
+        /* modal takes up most of the screen */
+        width: 95vw;
+        height: 95vh;
+    }
+
+    /* Make Adjustments to Fullcalendar by
+    reducing Toolbar title size, button sizes
+    and margin between buttons */
+    .fc-toolbar-chunk .fc-toolbar-title {
+        font-size: 1em;
+    }
+
+    .fc .fc-button {
+        font-size: .8em;
+        padding: 0.2em 0.45em;
+    }
+
+    .fc-direction-ltr .fc-toolbar > * > :not(:first-child) {
+        /* all direct children of the direct children of 
+        parent execpt the first child */
+        margin-left: .4em;
+    }
 }

@@ -51,20 +51,22 @@ export default function itineraryListPage() {
   };
 
   async function handleDeleteItinerary(itineraryid: string) {
-    setModalOpen(false);
+    if (confirm("Are you sure you want to delete this itinerary?")) {
+      setModalOpen(false);
 
-    setLoading(true);
-    try {
-      await removeItinerary(itineraryid);
+      setLoading(true);
+      try {
+        await removeItinerary(itineraryid);
 
-      const itins = await getItineraries();
-      setItineraries(itins);
-    }
-    catch (err) {
-      console.log(err);
-    }
-    finally {
-      setLoading(false);
+        const itins = await getItineraries();
+        setItineraries(itins);
+      }
+      catch (err) {
+        console.log(err);
+      }
+      finally {
+        setLoading(false);
+      }
     }
   }
 

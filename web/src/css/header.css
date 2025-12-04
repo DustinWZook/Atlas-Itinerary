@@ -27,5 +27,6 @@
     width: 120px;
     height: auto;
     object-fit: contain;
+    border-radius: 4px;
 }
 

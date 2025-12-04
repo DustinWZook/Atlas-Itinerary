@@ -1,5 +1,5 @@
 .itineraryCard {
-    background-color: gainsboro;
+    background-color: rgb(242, 242, 242);
     border-radius: 10px;
     padding: 20px;
     margin: 10px;
@@ -10,7 +10,7 @@
 
 .itineraryCard:hover {
     transition: background-color 0.5s ease;
-    background-color: rgb(189, 189, 189);
+    background-color: rgb(200, 200, 200);
 }
 
 .itineraryInfo {
@@ -19,7 +19,7 @@
 
 .itineraryInfo h2 {
     text-align: center;
-    color: white;
+    color: rgb(50, 50, 50);
 }
 
 .itineraryInfo p {

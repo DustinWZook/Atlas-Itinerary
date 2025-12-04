@@ -6,7 +6,7 @@ export default function ItineraryCard({ itinerary, clickExpand }: { itinerary: I
         <div className="itineraryInfo">
             <h2>{itinerary.name}</h2>
             <h2>{itinerary.traveldestination}</h2>
-            <p>Date: {itinerary.startdate} - {itinerary.enddate}</p>
+            <p>Date: {itinerary.startdate} to {itinerary.enddate}</p>
         </div>
     </div>
 }

@@ -6,9 +6,9 @@ import { User } from '@supabase/supabase-js';
 
 
 type NavBarProps = {
-  onSignOut: () => void;
-  currentLocation?: string; // e.g. "Dallas, TX"
-  email?: string;           // e.g. "user@example.com"
+    onSignOut: () => void;
+    currentLocation?: string; // e.g. "Dallas, TX"
+    email?: string;           // e.g. "user@example.com"
 };
 
 export default function NavBar({ onSignOut, currentLocation, email }: NavBarProps) {
@@ -20,9 +20,9 @@ export default function NavBar({ onSignOut, currentLocation, email }: NavBarProp
 
     useEffect(() => {
         const fetchUser = async () => {
-            const {data} = await supabase.auth.getSession();
+            const { data } = await supabase.auth.getSession();
 
-            if (data.session?.user != null) {
+            if (data.session?.user) {
                 //console.log(data.session.user);
                 //console.log(data.session.user.user_metadata.avatar_url);
                 setUser(data.session.user);
@@ -41,8 +41,8 @@ export default function NavBar({ onSignOut, currentLocation, email }: NavBarProp
                 <li><Link href="/itineraryList">Itinerary List</Link></li>
 
                 <li className="dropdown">
-                    <span 
-                        className="dropbtn" 
+                    <span
+                        className="dropbtn"
                         onClick={() => setOpen(prev => !prev)}
                     >
                         Account ▾
@@ -50,7 +50,7 @@ export default function NavBar({ onSignOut, currentLocation, email }: NavBarProp
 
                     <div className={`content ${open ? "open" : ""}`}>
                         <div className='dropdown-item'>
-                            <img src={avatarUrl} alt='userImg' className='avatarImg'/>
+                            {avatarUrl && <img src={avatarUrl} alt='userImg' className='avatarImg' />}
                             <span className='dropdown-text'>
                                 {user?.user_metadata.full_name}
                             </span>

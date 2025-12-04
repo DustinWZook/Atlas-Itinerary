@@ -43,8 +43,9 @@ export async function addItineraryLocation(
 }
 
 // Remove a saved place from an itinerary
-export async function removeItineraryLocation(itineraryid: string, placeid: string) {
+export async function removeItineraryLocation(locationid: string) {
   const supabase = createSupabaseBrowserClient();
-  const { error } = await supabase.from('locations').delete().match({ itineraryid, placeid }); // delete query
+  // delete location row where locationid column = passed locationid parameter
+  const { error } = await supabase.from('locations').delete().eq('locationid', locationid); // delete query
   if (error) throw error; // throw any errors
 }

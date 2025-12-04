@@ -25,11 +25,6 @@
     color: rgba(255, 166, 0, 0.6);
 }
 
-.navBar ul li button {
-    padding: 6px;
-    border-radius: 16px;
-}
-
 .dropdown {
     position: relative;
 }
@@ -79,7 +74,7 @@
     border-radius: 6px;
     box-shadow: 2px 2px 5px hsla(0, 0%, 0%, 0.8);
     z-index: 1000;
-    padding: 5px 0;
+    padding: 5px 0 0;
 
     
     max-height: 0;          

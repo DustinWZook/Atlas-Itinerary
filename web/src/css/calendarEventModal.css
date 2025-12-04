@@ -1,0 +1,78 @@
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1001;
+    display: grid;
+    place-items: center;
+}
+
+.calendarEventModal {
+    width: 65vw;
+    height: 65vh;
+    background-color: white;
+    z-index: 1001;
+    box-shadow: 0 4px 8px;
+    border-radius: 10px;
+    padding: 20px;
+    overflow: auto;
+}
+
+.calendarEventModal h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.calendarEventModal .content h3 {
+    text-align: initial;
+}
+
+.calendarEventModal .content {
+    display: flex;
+    flex-direction: row;
+    height: 85%;
+}
+
+.textContent {
+    width: 100%;
+}
+
+.textContent hr {
+    margin-top: 4px;
+    margin-bottom: 8px;
+    opacity: 50%;
+}
+
+.placeLinks ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 1em;
+    align-items: center;    
+}
+
+.placePhoto {
+    border-radius: 6px;
+    margin-right: 10px;
+}
+
+.buttons {
+    margin-top: 10px;
+}
+
+.buttons button {
+    padding: 4px;
+    margin-right: 12px;
+}
+
+/* CSS for smaller devices */
+@media screen and (max-width: 600px) {
+    .calendarEventModal {
+        /* modal takes up most of the screen */
+        width: 90vw;
+        height: 90vh;
+    }
+}
