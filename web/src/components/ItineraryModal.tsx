@@ -57,7 +57,7 @@ export default function ItineraryModal({ open, itinerary, onClose, onDelete }: {
 
                     // if placeid key is not in placesDetails, make api call and add it to record
                     if (!(lctn.placeid in plsDets)) {
-                        console.log("Calling Places API");
+                        // console.log("Calling Places API");
                         const response = await fetch(`/api/locations/${encodeURIComponent(lctn.placeid)}`);
 
                         const details: PlaceDetails = await response.json();
@@ -72,9 +72,9 @@ export default function ItineraryModal({ open, itinerary, onClose, onDelete }: {
                     })
                 }
 
-                console.log(plsDets);
-                console.log(lctns);
-                console.log(events);
+                // console.log(plsDets);
+                // console.log(lctns);
+                // console.log(events);
 
                 setPlacesDetails(plsDets);
                 setLocations(lctns);
