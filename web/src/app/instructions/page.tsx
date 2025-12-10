@@ -5,19 +5,19 @@ import { createSupabaseBrowserClient } from '@/lib/supabase/client';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import testImg from '@/ImageTest/Test.jpg';
-import swordTest from '@/ImageTest/Sword.png';
-import clickCreate from '@/ImageTest/ClickCreate.png'
-import locationRequest from '@/ImageTest/BeforeLocationAccess.png';
-import locationAllow from '@/ImageTest/AllowLocationAccess.png'
-import typingLocation from '@/ImageTest/TypingLocation.png'
-import loadingVenues from '@/ImageTest/LoadedVenues.png'
-import focusedCatagories from '@/ImageTest/FocusedCatagories.png'
-import venueDetails from '@/ImageTest/VenueDetails.png'
-import StartDate from '@/ImageTest/StartDate.png'
-import StartTime from '@/ImageTest/StartTime.png'
-import EndTime from '@/ImageTest/EndTime.png'
-import ViewItinerary from '@/ImageTest/ViewItinerary.png'
+//import testImg from '@/ImageTest/Test.jpg';
+//import swordTest from '@/ImageTest/Sword.png';
+//import clickCreate from '@/ImageTest/ClickCreate.png'
+//import locationRequest from '@/ImageTest/BeforeLocationAccess.png';
+//import locationAllow from '@/ImageTest/AllowLocationAccess.png'
+//import typingLocation from '@/ImageTest/TypingLocation.png'
+//import loadingVenues from '@/ImageTest/LoadedVenues.png'
+//import focusedCatagories from '@/ImageTest/FocusedCatagories.png'
+//import venueDetails from '@/ImageTest/VenueDetails.png'
+//import StartDate from '@/ImageTest/StartDate.png'
+//import StartTime from '@/ImageTest/StartTime.png'
+//import EndTime from '@/ImageTest/EndTime.png'
+//import ViewItinerary from '@/ImageTest/ViewItinerary.png'
 
 import '@/css/home.css';
 
@@ -79,7 +79,7 @@ export default function InstructionsPage() {
                 This is the second option, next to Home, at the top of the website.
                 {/*<br />(image of Create Itinerary before location access has been allowed)*/}
               
-              <Image className="image-container" src={clickCreate} alt="Example venue card" />
+              {/*<Image className="image-container" src={clickCreate} alt="Example venue card" />*/}
               </p>
             </div>
 
@@ -91,7 +91,7 @@ export default function InstructionsPage() {
                 into the search bar instead.
                {/* <br />(image of mouse clicking location access allowed)*/}
               </p>
-              <Image className="image-container" src={locationAllow} alt="Example venue card" />
+              {/*<Image className="image-container" src={locationAllow} alt="Example venue card" />*/}
             </div>
 
             <div id="step-3" className="instructions step-card">
@@ -101,7 +101,7 @@ export default function InstructionsPage() {
                 Once your city is suggested, select it by clicking on it.
                {/* <br />(image of user typing in a location)*/}
               </p>
-              <Image className="image-container" src={typingLocation} alt="Example venue card" />
+              {/*<Image className="image-container" src={typingLocation} alt="Example venue card" />*/}
             </div>
 
             <div id="step-4" className="instructions step-card">
@@ -111,7 +111,7 @@ export default function InstructionsPage() {
                 provided with venue options to add to your itinerary.
                {/*} <br />(image of venues in lodging for example destination)*/}
               </p>
-              <Image className="image-container" src={loadingVenues} alt="Example venue card" />
+              {/*<Image className="image-container" src={loadingVenues} alt="Example venue card" />*/}
             </div>
 
             <div id="step-5" className="instructions step-card">
@@ -121,7 +121,7 @@ export default function InstructionsPage() {
                 <br /><strong>Lodging</strong>, <strong>Dining</strong>, and <strong>Attractions</strong>.
                {/* <br />(image of focused view on categories)*/}
               </p>
-              <Image className="image-container" src={focusedCatagories} alt="Example venue card" />
+              {/*<Image className="image-container" src={focusedCatagories} alt="Example venue card" />*/}
             </div>
 
             {/*<div id="step-6" className="instructions step-card">
@@ -141,7 +141,7 @@ export default function InstructionsPage() {
                 or click <strong>Close</strong> to continue browsing.
                 {/*<br />(image of expanded venue card)*/}
               </p>
-              <Image className="image-container" src={venueDetails} alt="Example venue card" />
+              {/*<Image className="image-container" src={venueDetails} alt="Example venue card" />*/}
               <p>You&apos;ll also be asked to choose when
                 this venue should appear in your trip. </p>
             </div>
@@ -162,11 +162,11 @@ export default function InstructionsPage() {
                 Select the <strong>start date</strong>, <strong>end date</strong>
                {/* <br />(image of calendar with example data)*/}
               </p>
-              <Image className="image-container" src={StartDate} alt="Calendar example" />
+              {/*<Image className="image-container" src={StartDate} alt="Calendar example" />*/}
               <p><strong>start time</strong></p>
-              <Image className="image-container" src={StartTime} alt="Calendar example" />
+              {/*<Image className="image-container" src={StartTime} alt="Calendar example" />*/}
               <p>and <strong>end time</strong></p>
-              <Image className="image-container" src={EndTime} alt="Calendar example" />
+              {/*<Image className="image-container" src={EndTime} alt="Calendar example" />*/}
               <p>Once everything looks correct, you&apos;re ready to add it to your calendar.</p>
             </div>
 
@@ -197,7 +197,7 @@ export default function InstructionsPage() {
                 To view your itinerary, go to <strong>Itinerary List</strong> in the navigation bar.
                 {/*<br />(image of clicking on Itinerary List)*/}
               </p>
-              <Image className="image-container" src={ViewItinerary} alt="Itinerary list" />
+              {/*<Image className="image-container" src={ViewItinerary} alt="Itinerary list" />*/}
             </div>
           </section>
         </div>
