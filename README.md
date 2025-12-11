@@ -5,7 +5,7 @@ Atlas Itinerary is a personal travel itinerary planner that helps users design d
 Many people start planning with sticky notes, random websites, and scattered phone reminders. They may know what hotel they want, where they want to eat, and which attractions are “must-sees,” but they struggle to see how everything fits together in a realistic timeline. It is easy to double-book a time slot, underestimate travel time between places, or simply forget a stop entirely. Atlas Itinerary addresses this problem by providing a single web application where users can search for places, select the ones they care about, and plug them into a calendar-like structure for their trip.
 
 ## Primary Audience
-The audience for this system is casual travelers who want structure without committing to reservations yet, as well as more technical users who want a repeatable way to plan multiple trips. From a developer’s point of view, Atlas Itinerary is also a small but complete full-stack React and Next.js application with authentication, a Postgres-backed database, and server-side API routes. With the documentation in this report, a team of developers with similar skills should be able to understand, build, fix, and extend the system. 
+The audience for this system is casual travelers who want structure without committing to reservations yet, as well as more technical users who want a repeatable way to plan multiple trips. 
 
 ### Try Atlas Itinerary [here](https://atlas-itinerary-4skv.vercel.app)!
 
