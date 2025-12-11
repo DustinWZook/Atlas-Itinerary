@@ -7,7 +7,7 @@ Many people start planning with sticky notes, random websites, and scattered pho
 ## Primary Audience
 The audience for this system is casual travelers who want structure without committing to reservations yet, as well as more technical users who want a repeatable way to plan multiple trips. From a developer’s point of view, Atlas Itinerary is also a small but complete full-stack React and Next.js application with authentication, a Postgres-backed database, and server-side API routes. With the documentation in this report, a team of developers with similar skills should be able to understand, build, fix, and extend the system. 
 
-Try Atlas Itinerary [here](https://atlas-itinerary-4skv.vercel.app)!
+### Try Atlas Itinerary [here](https://atlas-itinerary-4skv.vercel.app)!
 
 ***
 ## Repository Structure
